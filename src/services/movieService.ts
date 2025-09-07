@@ -1,5 +1,12 @@
 import axios from 'axios';
-import { MoviesResponse } from '../types/movie';
+import { Movie } from '../types/movie';
+
+export interface MoviesResponse {
+  page: number;
+  results: Movie[];
+  total_results: number;
+  total_pages: number;
+}
 
 const BASE_URL = 'https://api.themoviedb.org/3';
 const token = import.meta.env.VITE_TMDB_TOKEN;
@@ -12,7 +19,6 @@ const axiosInstance = axios.create({
   },
 });
 
-
 export async function fetchMoviesByQuery(
   query: string,
   page = 1
@@ -24,7 +30,9 @@ export async function fetchMoviesByQuery(
     language: 'en-US',
   };
 
-  
-  const response = await axiosInstance.get<MoviesResponse>('/search/movie', { params });
+  const response = await axiosInstance.get<MoviesResponse>('/search/movie', {
+    params,
+  });
   return response.data;
 }
+
