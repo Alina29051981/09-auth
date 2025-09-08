@@ -76,7 +76,7 @@ const App: React.FC = () => {
       <SearchBar onSubmit={handleSearchSubmit} />
 
       {loading && <Loader />}
-      {error && <ErrorMessage />}
+      {error && <ErrorMessage message={error} />}
       {!loading && !error && movies.length > 0 && (
         <>
           <MovieGrid movies={movies} onSelect={handleSelect} lastMovieRef={lastMovieRef} />
