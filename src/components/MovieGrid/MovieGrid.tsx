@@ -8,7 +8,9 @@ interface MovieGridProps {
   lastMovieRef?: React.Ref<HTMLLIElement>;
 }
 
-const imageBase = (path: string | null) => (path ? `https://image.tmdb.org/t/p/w500${path}` : '');
+// Функція для формування URL зображення
+const getImageUrl = (path?: string | null): string | undefined =>
+  path ? `https://image.tmdb.org/t/p/w500${path}` : undefined;
 
 const MovieGrid: React.FC<MovieGridProps> = ({ movies, onSelect, lastMovieRef }) => {
   if (!movies || movies.length === 0) return null;
@@ -18,7 +20,7 @@ const MovieGrid: React.FC<MovieGridProps> = ({ movies, onSelect, lastMovieRef })
       {movies.map((movie, index) => (
         <li
           key={movie.id}
-          ref={index === movies.length - 1 ? lastMovieRef : null} 
+          ref={index === movies.length - 1 ? lastMovieRef : null}
         >
           <div
             className={css.card}
@@ -31,11 +33,11 @@ const MovieGrid: React.FC<MovieGridProps> = ({ movies, onSelect, lastMovieRef })
           >
             <img
               className={css.image}
-              src={imageBase(movie.poster_path) || undefined}
-              alt={movie.title}
+              src={getImageUrl(movie.poster_path)}
+              alt={movie.title ?? 'Movie poster'}
               loading="lazy"
             />
-            <h2 className={css.title}>{movie.title}</h2>
+            <h2 className={css.title}>{movie.title ?? 'No title'}</h2>
           </div>
         </li>
       ))}
@@ -44,4 +46,3 @@ const MovieGrid: React.FC<MovieGridProps> = ({ movies, onSelect, lastMovieRef })
 };
 
 export default MovieGrid;
-
