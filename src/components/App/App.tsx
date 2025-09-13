@@ -25,8 +25,8 @@ export default function App() {
   useEffect(() => {
   if (data && data.results.length === 0) {
     iziToast.error({
-      title: '', // без заголовка
-      message: 'No movies found for your request', // текст повідомлення
+      title: '', 
+      message: 'No movies found for your request', 
       position: 'topRight',
       timeout: 2500,
       close: true,
