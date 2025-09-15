@@ -5,7 +5,8 @@ import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
 
 import { fetchMovies } from "../../api/movies";
-import { Movie, MoviesResponse } from "../../types/movie";
+import { Movie } from '../../types/movie';
+import { MoviesResponse } from "../../services/movieService";
 import MovieCard from "../MovieCard/MovieCard";
 import css from "./App.module.css";
 
