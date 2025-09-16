@@ -1,50 +1,54 @@
 import { useState, useEffect } from "react";
 import ReactPaginate from "react-paginate";
+import iziToast from "izitoast";
+import "izitoast/dist/css/iziToast.min.css";
 import { useQuery } from "@tanstack/react-query";
-import iziToast from 'izitoast';
-import 'izitoast/dist/css/iziToast.min.css';
 
 import { fetchMovies } from "../../api/movies";
-import { Movie } from '../../types/movie';
+import { Movie } from "../../types/movie";
 import { MoviesResponse } from "../../services/movieService";
 import MovieCard from "../MovieCard/MovieCard";
+import MovieModal from "../MovieModal/MovieModal";
+
 import css from "./App.module.css";
 
 export default function App() {
   const [input, setInput] = useState("");
   const [query, setQuery] = useState("");
   const [page, setPage] = useState(1);
-  const [previousData, setPreviousData] = useState<MoviesResponse | null>(null);
+  const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
 
   const { data, isLoading, isError } = useQuery<MoviesResponse>({
     queryKey: ["movies", query, page],
     queryFn: () => fetchMovies(query, page),
     enabled: !!query,
     staleTime: 5000,
+    placeholderData: (prev) => prev, // заміна keepPreviousData у v5
   });
 
   useEffect(() => {
-  if (data && data.results.length === 0) {
-    iziToast.error({
-      title: '', 
-      message: 'No movies found for your request', 
-      position: 'topRight',
-      timeout: 2500,
-      close: true,
-    });
-  }
-}, [data]);
-
+    if (data && data.results.length === 0) {
+      iziToast.error({
+        title: "",
+        message: "No movies found for your request",
+        position: "topRight",
+        timeout: 2500,
+        close: true,
+      });
+    }
+  }, [data]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setQuery(input);
+    setQuery(input.trim());
     setPage(1);
-    setPreviousData(null);
   };
 
-  const moviesToShow = (data?.results.length ? data.results : previousData?.results || []).slice(0, 20);
-  const totalPages = data?.total_pages ?? previousData?.total_pages ?? 0;
+  const handleSelectMovie = (movie: Movie) => setSelectedMovie(movie);
+  const handleCloseModal = () => setSelectedMovie(null);
+
+  const moviesToShow = data?.results ?? [];
+  const totalPages = data?.total_pages ?? 0;
 
   return (
     <div className={css.container}>
@@ -83,10 +87,14 @@ export default function App() {
 
           <div className={css.grid}>
             {moviesToShow.map((movie: Movie) => (
-              <MovieCard key={movie.id} movie={movie} />
+              <MovieCard key={movie.id} movie={movie} onSelect={handleSelectMovie} />
             ))}
           </div>
         </main>
+      )}
+
+      {selectedMovie && (
+        <MovieModal movie={selectedMovie} onClose={handleCloseModal} />
       )}
     </div>
   );
