@@ -1,5 +1,5 @@
 {
-  "name": "03-react-movies",
+  "name": "05-notehub",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -11,13 +11,16 @@
   },
   "dependencies": {
     "@tanstack/react-query": "^5.87.4",
-    "axios": "^1.11.0",
+    "axios": "^1.12.2",
+    "formik": "^2.4.6",
     "izitoast": "^1.4.0",
     "modern-normalize": "^3.0.1",
-    "react": "^19.1.1",
-    "react-dom": "^19.1.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "react-hot-toast": "^2.6.0",
-    "react-paginate": "^8.3.0"
+    "react-paginate": "^8.3.0",
+    "use-debounce": "^10.0.6",
+    "yup": "^1.7.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.33.0",
