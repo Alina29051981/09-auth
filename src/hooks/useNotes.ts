@@ -5,9 +5,8 @@ import {
   deleteNote,
   FetchNotesParams,
   FetchNotesResponse,
-  CreateNoteDTO,
-} from '../services/noteService';
-import { Note } from '../types/note';
+  } from '../services/noteService';
+import { Note, CreateNoteDTO, } from '../types/note';
 
 export const useNotes = (params: FetchNotesParams) => {
   return useQuery<FetchNotesResponse, Error>({
