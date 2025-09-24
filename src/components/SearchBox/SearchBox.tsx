@@ -1,12 +1,9 @@
 import React from 'react';
 import css from './SearchBox.module.css';
-
 export interface SearchBoxProps {
   value: string;
   onChange: (v: string) => void;
 }
-
-
 
 const SearchBox: React.FC<SearchBoxProps> = ({ value, onChange }) => (
   <input

@@ -17,36 +17,39 @@ const App: React.FC = () => {
   const [debouncedSearch] = useDebounce(search, 300);
   const [isModalOpen, setModalOpen] = useState(false);
 
-   const [isPending, startTransition] = useTransition();
+  const [isPending, startTransition] = useTransition();
 
   const searchQuery = page === 1 && !search ? '' : debouncedSearch;
 
   const { data, isLoading, isError } = useQuery<FetchNotesResponse>({
     queryKey: ['notes', searchQuery, page],
-    queryFn: () => fetchNotes({ page, perPage: PER_PAGE, search: searchQuery }),
+    queryFn: () =>
+      fetchNotes({ page, perPage: PER_PAGE, search: searchQuery }),
     staleTime: 5000,
+    keepPreviousData: true,
+    placeholderData: { notes: [], totalNumberOfPages: 1 }, 
   });
 
   const notes = data?.notes ?? [];
-  const totalNumberOfPages = data?.totalPages ?? 1;
+  const totalNumberOfPages = data?.totalNumberOfPages ?? 1;
 
-   const handlePageChange = useCallback((p: number) => {
-    startTransition(() => setPage(p)); 
+  const handlePageChange = useCallback((p: number) => {
+    startTransition(() => setPage(p));
   }, []);
 
   const handleSearchChange = useCallback((v: string) => {
     startTransition(() => {
       setPage(1);
-      setSearch(v); 
+      setSearch(v);
     });
   }, []);
 
   const openModal = useCallback(() => {
-    startTransition(() => setModalOpen(true)); 
+    startTransition(() => setModalOpen(true));
   }, []);
 
   const closeModal = useCallback(() => {
-    startTransition(() => setModalOpen(false)); 
+    startTransition(() => setModalOpen(false));
   }, []);
 
   return (

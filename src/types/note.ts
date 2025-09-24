@@ -20,13 +20,3 @@ export interface CreateNoteDTO {
   content: string;
   tag: NoteTag;
 }
-export interface FetchNotesResponse {
-  notes: Note[];
-  totalNumberOfPages: number; 
-}
-export interface FetchNotesParams {
-  page: number;
-  perPage: number;
-  search?: string;
-}
-

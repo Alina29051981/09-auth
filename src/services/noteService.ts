@@ -1,32 +1,42 @@
 import axios from 'axios';
 import { Note, CreateNoteDTO } from '../types/note';
+
 export interface FetchNotesParams {
-  page?: number;
-  perPage?: number;
+  page: number;
+  perPage: number;
   search?: string;
 }
+
 export interface FetchNotesResponse {
   notes: Note[];
-  totalPages: number;
+  totalNumberOfPages: number;
 }
+
+const token = import.meta.env.VITE_NOTEHUB_TOKEN;
 
 const api = axios.create({
   baseURL: 'https://notehub-public.goit.study/api',
   headers: {
-    Authorization: `Bearer ${import.meta.env.VITE_NOTEHUB_TOKEN}`,
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
   },
 });
 
-export const fetchNotes = async (
-  params: FetchNotesParams = {}
-): Promise<FetchNotesResponse> => {
-  const { page = 1, perPage = 12, search = '' } = params;
+api.interceptors.request.use((config) => {
+  const t = import.meta.env.VITE_NOTEHUB_TOKEN;
+  if (t && config.headers) {
+    config.headers.Authorization = `Bearer ${t}`;
+  }
+  return config;
+});
 
+export const fetchNotes = async (
+  params: FetchNotesParams
+): Promise<FetchNotesResponse> => {
   const { data } = await api.get<FetchNotesResponse>('/notes', {
-    params: { page, perPage, search },
+    params,
   });
 
-  return data; 
+  return data;
 };
 
 export const createNote = async (dto: CreateNoteDTO): Promise<Note> => {
