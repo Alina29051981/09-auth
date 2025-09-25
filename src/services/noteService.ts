@@ -12,6 +12,12 @@ export interface FetchNotesResponse {
   totalNumberOfPages: number;
 }
 
+interface ApiNotesResponse {
+  notes: Note[];
+  totalPages: number;
+}
+
+
 const token = import.meta.env.VITE_NOTEHUB_TOKEN;
 
 const api = axios.create({
@@ -32,11 +38,12 @@ api.interceptors.request.use((config) => {
 export const fetchNotes = async (
   params: FetchNotesParams
 ): Promise<FetchNotesResponse> => {
-  const { data } = await api.get<FetchNotesResponse>('/notes', {
-    params,
-  });
+  const { data } = await api.get<ApiNotesResponse>('/notes', { params });
 
-  return data;
+  return {
+    notes: data.notes,
+    totalNumberOfPages: data.totalPages,
+  };
 };
 
 export const createNote = async (dto: CreateNoteDTO): Promise<Note> => {
