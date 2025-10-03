@@ -1,0 +1,109 @@
+/*!**********************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[14].oneOf[5].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[14].oneOf[5].use[3]!./app/notes/notes.module.css ***!
+  \**********************************************************************************************************************************************************************************************************************************************************************/
+.notes_app__a7n2b {
+    width: 90%;
+    max-width: 1280px;
+    margin: 0px auto;
+    padding: 0 16px 16px;
+    flex: 1 1;
+}
+
+.notes_toolbar__TyFLQ {
+    margin-bottom: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 0;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.notes_button__Ex4M8 {
+    padding: 6px 12px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #0d6efd;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.notes_button__Ex4M8:hover {
+    background-color: #0b5ed7;
+}
+/*!***********************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[14].oneOf[5].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[14].oneOf[5].use[3]!./components/NoteForm/NoteForm.module.css ***!
+  \***********************************************************************************************************************************************************************************************************************************************************************************/
+.NoteForm_form__kBK_0 {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.NoteForm_formGroup__bS5ba {
+    display: flex;
+    flex-direction: column;
+    font-size: 14px;
+    font-weight: 500;
+    color: #212529;
+}
+
+.NoteForm_input__28hgd,
+.NoteForm_textarea__kzing,
+.NoteForm_select__Go8Rq {
+    margin-top: 4px;
+    padding: 8px 12px;
+    font-size: 14px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    resize: none;
+}
+
+.NoteForm_actions__aG_Xr {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.NoteForm_submitButton__vSvUI {
+    padding: 8px 16px;
+    font-size: 16px;
+    background-color: #0d6efd;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.NoteForm_submitButton__vSvUI:hover {
+    background-color: #0b5ed7;
+}
+
+.NoteForm_submitButton__vSvUI:disabled {
+    background-color: #6c757d;
+    cursor: not-allowed;
+}
+
+.NoteForm_cancelButton__c33li {
+    padding: 8px 16px;
+    font-size: 16px;
+    background-color: #f8f9fa;
+    color: #212529;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.NoteForm_cancelButton__c33li:hover {
+    background-color: #e2e6ea;
+}
+
+.NoteForm_error__swtoj {
+    color: #dc3545;
+    font-size: 12px;
+    margin-top: 4px;
+}
