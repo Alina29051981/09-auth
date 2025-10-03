@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import Link from 'next/link';
 import css from './NoteList.module.css';
-import { Note } from '../../lib/types/note';
+import { Note } from '../../types/note';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { deleteNote } from '../../lib/api';
 

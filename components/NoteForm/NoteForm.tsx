@@ -3,7 +3,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import css from './NoteForm.module.css';
 import { useCreateNote } from '../../app/notes/useNotes';
-import { NoteTag, NOTE_TAGS } from '../../lib/types/note';
+import { NoteTag, NOTE_TAGS } from '../../types/note';
 import { useQueryClient } from '@tanstack/react-query';
 
 const schema = Yup.object().shape({
