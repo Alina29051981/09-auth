@@ -51,17 +51,20 @@ export default function NotesClient() {
 
       <NoteList notes={data?.notes || []} />
 
-      <Pagination
-        currentPage={page}
-        totalNumberOfPages={data?.totalNumberOfPages || 1}
-        onPageChange={handlePageChange}
-      />
+{data?.totalNumberOfPages > 1 && (
+  <Pagination
+    currentPage={page}
+    totalNumberOfPages={data.totalNumberOfPages}
+    onPageChange={handlePageChange}
+  />
+)}
 
-      {isModalOpen && (
-        <Modal onClose={handleCloseModal}>
-          <NoteForm onClose={handleCloseModal} />
-        </Modal>
-      )}
+{isModalOpen && (
+  <Modal onClose={handleCloseModal}>
+    <NoteForm onClose={handleCloseModal} />
+  </Modal>
+)}
+
     </div>
   );
 }
