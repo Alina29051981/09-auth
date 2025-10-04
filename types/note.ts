@@ -20,8 +20,3 @@ export interface CreateNoteDTO {
   content: string;
   tag: NoteTag;
 }
-
-export const metadata = {
-  title: 'NoteHub',
-  description: 'NoteHub app',
-};

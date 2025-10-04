@@ -28,7 +28,7 @@ export default async function NotesPage(props: NotesPageProps) {
 
   return (
     <TanStackProvider dehydratedState={dehydratedState}>
-      <NotesClient page={page} perPage={perPage} search={search} />
+      <NotesClient />
     </TanStackProvider>
   );
 }

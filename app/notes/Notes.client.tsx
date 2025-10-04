@@ -1,73 +1,84 @@
 'use client';
+
 import { useState } from 'react';
-import Link from 'next/link';
-import css from './notes.module.css';
-import { useNotes, useDeleteNote } from './useNotes';
-import { FetchNotesParams } from '../../lib/api';
+import { useDebounce } from 'use-debounce';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { fetchNotes, deleteNote } from '../../lib/api';
+import SearchBox from '../../components/SearchBox/SearchBox';
+import Pagination from '../../components/Pagination/Pagination';
+import NoteList from '../../components/NoteList/NoteList';
+import Modal from '../../components/Modal/Modal';
 import NoteForm from '../../components/NoteForm/NoteForm';
 
-interface NotesClientProps {
-  page: number;
-  perPage: number;
-  search: string;
-}
+const PER_PAGE = 5;
 
-export default function NotesClient({ page, perPage, search }: NotesClientProps) {
-  const [inputValue, setInputValue] = useState(search);
-  const [searchTerm, setSearchTerm] = useState(search);
-  const [isFormOpen, setIsFormOpen] = useState(false);
+export default function NotesClient() {
+  const queryClient = useQueryClient();
 
-  const params: FetchNotesParams = { page, perPage, search: searchTerm };
-  const { data, isLoading, error } = useNotes(params);
-  const deleteMutation = useDeleteNote(params);
+    const [searchQuery, setSearchQuery] = useState('');
+  const [debouncedSearch] = useDebounce(searchQuery, 500);
+  const [page, setPage] = useState(1);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleSearchSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (inputValue.trim().length < 3) {
-      alert('Enter at least 3 characters to search');
-      return;
+   const { data, isLoading, error } = useQuery({
+    queryKey: ['notes', page, debouncedSearch],
+    queryFn: () =>
+      fetchNotes({ page, perPage: PER_PAGE, search: debouncedSearch || undefined }),
+    keepPreviousData: true,
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: (id: string) => deleteNote(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['notes'] });
+    },
+  });
+
+    const handleDelete = (id: string) => {
+    if (confirm('Are you sure you want to delete this note?')) {
+      deleteMutation.mutate(id);
     }
-    setSearchTerm(inputValue.trim());
   };
 
-  if (isLoading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error.message}</p>;
+  const handleSearchChange = (value: string) => {
+    setPage(1);
+    setSearchQuery(value);
+  };
 
-  const notes = data?.notes ?? [];
+  const handlePageChange = (newPage: number) => setPage(newPage);
+
+  const handleOpenModal = () => setIsModalOpen(true);
+  const handleCloseModal = () => setIsModalOpen(false);
+
+  if (isLoading) return <p>Loading, please wait...</p>;
+  if (error) return <p>Could not fetch the list of notes. {(error as Error).message}</p>;
 
   return (
-    <div className={css.container}>
-      <div className={css.controls} style={{ marginBottom: '20px' }}>
-        {/* Пошук */}
-        <form onSubmit={handleSearchSubmit} style={{ display: 'flex', gap: '10px', marginBottom: '15px' }}>
-          <input
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            placeholder="Search notes..."
-            style={{ width: '200px', padding: '5px' }}
-          />
-          <button type="submit">Search</button>
-        </form>
-
-                <button onClick={() => setIsFormOpen(true)} style={{ marginTop: '10px' }}>
-          Create New Note
+    <div>
+      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 16 }}>
+        <SearchBox value={searchQuery} onChange={handleSearchChange} />
+        <button type="button" onClick={handleOpenModal}>
+          + New Note
         </button>
       </div>
 
-            {isFormOpen && <NoteForm onClose={() => setIsFormOpen(false)} />}
+      <NoteList
+        notes={data?.notes || []}
+        onDelete={handleDelete}
+      />
 
-      <ul className={css.list}>
-        {notes.map((note) => (
-          <li key={note.id} className={css.item}>
-            <h3>{note.title}</h3>
-            <p>{note.content}</p>
-            <div className={css.actions}>
-              <Link href={`/notes/${note.id}`}>View</Link>
-              <button onClick={() => deleteMutation.mutate(note.id)}>Delete</button>
-            </div>
-          </li>
-        ))}
-      </ul>
+      <Pagination
+  currentPage={page}
+  totalNumberOfPages={data?.totalNumberOfPages || 1}
+  onPageChange={handlePageChange}
+/>
+
+      {isModalOpen && (
+       <Modal onClose={handleCloseModal}>
+  <NoteForm onClose={handleCloseModal} />
+</Modal>
+
+      )}
     </div>
   );
 }

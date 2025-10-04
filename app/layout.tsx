@@ -4,6 +4,11 @@ import Footer from '../components/Footer/Footer';
 import TanStackProvider from '../components/TanStackProvider/TanStackProvider';
 import type { ReactNode } from 'react';
 
+export const metadata = {
+  title: 'NoteHub',
+  description: 'NoteHub app',
+};
+
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">

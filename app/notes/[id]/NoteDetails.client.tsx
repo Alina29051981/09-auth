@@ -1,19 +1,22 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import { fetchNoteById } from '../../../lib/api';
 import css from './NoteDetails.module.css';
 
 interface NoteDetailsClientProps {
   id: string;
-  onClose: () => void; 
 }
 
-export default function NoteDetailsClient({ id, onClose }: NoteDetailsClientProps) {
+export default function NoteDetailsClient({ id }: NoteDetailsClientProps) {
+  const router = useRouter();
+
   const { data: note, isLoading, error } = useQuery({
     queryKey: ['note', id],
     queryFn: () => fetchNoteById(id),
     enabled: !!id,
+    refetchOnMount: false,
   });
 
   if (isLoading) return <p>Loading, please wait...</p>;
@@ -21,8 +24,8 @@ export default function NoteDetailsClient({ id, onClose }: NoteDetailsClientProp
 
   return (
     <div className={css.container} style={{ position: 'relative' }}>
-            <button
-        onClick={onClose}
+      <button
+        onClick={() => router.push('/notes')}
         aria-label="Close"
         style={{
           position: 'absolute',

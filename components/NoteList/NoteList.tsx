@@ -1,17 +1,16 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import css from './NoteList.module.css';
 import { Note } from '../../types/note';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { deleteNote } from '../../lib/api';
 
 export interface NoteListProps {
   notes: Note[];
+  onDelete: (id: string) => void | Promise<void>;
 }
 
 const NoteListItem: React.FC<{
   note: Note;
-  onDelete: (id: string) => void;
+  onDelete: (id: string) => void | Promise<void>;
 }> = React.memo(({ note, onDelete }) => (
   <li className={css.listItem}>
     <h2 className={css.title}>{note.title}</h2>
@@ -27,29 +26,17 @@ const NoteListItem: React.FC<{
     </div>
   </li>
 ));
+NoteListItem.displayName = 'NoteListItem';
 
-const NoteList: React.FC<NoteListProps> = ({ notes }) => {
-  const queryClient = useQueryClient();
-
-  const deleteMut = useMutation({
-    mutationFn: (id: string) => deleteNote(id),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['notes'] });
-    },
-  });
-
-  const handleDelete = useCallback(
-    (id: string) => {
-      if (!confirm('Delete this note?')) return;
-      deleteMut.mutate(id);
-    },
-    [deleteMut]
-  );
+const NoteList: React.FC<NoteListProps> = ({ notes, onDelete }) => {
+  if (notes.length === 0) {
+    return <p className={css.empty}>No notes found.</p>;
+  }
 
   return (
     <ul className={css.list}>
       {notes.map((note) => (
-        <NoteListItem key={note.id} note={note} onDelete={handleDelete} />
+        <NoteListItem key={note.id} note={note} onDelete={onDelete} />
       ))}
     </ul>
   );

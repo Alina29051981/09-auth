@@ -55,8 +55,6 @@ export const deleteNote = async (id: string): Promise<Note> => {
 };
 
 export const fetchNoteById = async (id: string): Promise<Note> => {
-  const { data } = await api.get(`/notes/${id}`);
-  console.log("fetchNoteById response:", data);
-  return data as Note; 
+   const { data } = await api.get<Note>(`/notes/${id}`);
+  return data;
 };
-
