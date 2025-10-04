@@ -9,18 +9,19 @@ import Pagination from '../../components/Pagination/Pagination';
 import NoteList from '../../components/NoteList/NoteList';
 import Modal from '../../components/Modal/Modal';
 import NoteForm from '../../components/NoteForm/NoteForm';
+import css from './Notes.module.css';
 
 const PER_PAGE = 5;
 
 export default function NotesClient() {
   const queryClient = useQueryClient();
 
-    const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
   const [debouncedSearch] = useDebounce(searchQuery, 500);
   const [page, setPage] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-   const { data, isLoading, error } = useQuery({
+  const { data, isLoading, error } = useQuery({
     queryKey: ['notes', page, debouncedSearch],
     queryFn: () =>
       fetchNotes({ page, perPage: PER_PAGE, search: debouncedSearch || undefined }),
@@ -34,7 +35,7 @@ export default function NotesClient() {
     },
   });
 
-    const handleDelete = (id: string) => {
+  const handleDelete = (id: string) => {
     if (confirm('Are you sure you want to delete this note?')) {
       deleteMutation.mutate(id);
     }
@@ -54,30 +55,26 @@ export default function NotesClient() {
   if (error) return <p>Could not fetch the list of notes. {(error as Error).message}</p>;
 
   return (
-    <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 16 }}>
+    <div className={css.app}>
+      <div className={css.toolbar}>
         <SearchBox value={searchQuery} onChange={handleSearchChange} />
-        <button type="button" onClick={handleOpenModal}>
+        <button type="button" className={css.button} onClick={handleOpenModal}>
           + New Note
         </button>
       </div>
 
-      <NoteList
-        notes={data?.notes || []}
-        onDelete={handleDelete}
-      />
+      <NoteList notes={data?.notes || []} onDelete={handleDelete} />
 
       <Pagination
-  currentPage={page}
-  totalNumberOfPages={data?.totalNumberOfPages || 1}
-  onPageChange={handlePageChange}
-/>
+        currentPage={page}
+        totalNumberOfPages={data?.totalNumberOfPages || 1}
+        onPageChange={handlePageChange}
+      />
 
       {isModalOpen && (
-       <Modal onClose={handleCloseModal}>
-  <NoteForm onClose={handleCloseModal} />
-</Modal>
-
+        <Modal onClose={handleCloseModal}>
+          <NoteForm onClose={handleCloseModal} />
+        </Modal>
       )}
     </div>
   );

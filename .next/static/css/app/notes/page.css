@@ -259,3 +259,38 @@
     font-size: 12px;
     margin-top: 4px;
 }
+/*!**********************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[14].oneOf[5].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[14].oneOf[5].use[3]!./app/notes/Notes.module.css ***!
+  \**********************************************************************************************************************************************************************************************************************************************************************/
+.Notes_app__aTXMH {
+    width: 90%;
+    max-width: 1280px;
+    margin: 0px auto;
+    padding: 0 16px 16px;
+    flex: 1 1;
+}
+
+.Notes_toolbar__vxiBS {
+    margin-bottom: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 0;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.Notes_button__E1JoO {
+    padding: 6px 12px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #0d6efd;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.Notes_button__E1JoO:hover {
+    background-color: #0b5ed7;
+}

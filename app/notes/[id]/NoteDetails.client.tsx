@@ -9,14 +9,18 @@ interface NoteDetailsClientProps {
   id: string;
 }
 
+interface Note {
+  id: string;
+  title: string;
+  content: string;
+  createdAt: string;
+  tags?: string[];
+}
+
 const NoteDetailsClient = ({ id }: NoteDetailsClientProps) => {
   const router = useRouter();
 
-  const {
-    data: note,
-    isLoading,
-    error,
-  } = useQuery({
+  const { data: note, isLoading, error } = useQuery<Note>({
     queryKey: ['note', id],
     queryFn: () => fetchNoteById(id),
     refetchOnMount: false,
@@ -50,7 +54,19 @@ const NoteDetailsClient = ({ id }: NoteDetailsClientProps) => {
         <div className={css.header}>
           <h2>{note.title}</h2>
         </div>
+
         <p className={css.content}>{note.content}</p>
+
+        {note.tags && note.tags.length > 0 && (
+          <div>
+            {note.tags.map((tag) => (
+              <span key={tag} className={css.tag}>
+                {tag}
+              </span>
+            ))}
+          </div>
+        )}
+
         <p className={css.date}>{new Date(note.createdAt).toLocaleString()}</p>
       </div>
     </div>
