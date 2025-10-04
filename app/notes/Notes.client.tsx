@@ -2,8 +2,8 @@
 
 import { useState } from 'react';
 import { useDebounce } from 'use-debounce';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { fetchNotes, deleteNote } from '../../lib/api';
+import { useQuery } from '@tanstack/react-query';
+import { fetchNotes, FetchNotesResponse } from '../../lib/api';
 import SearchBox from '../../components/SearchBox/SearchBox';
 import Pagination from '../../components/Pagination/Pagination';
 import NoteList from '../../components/NoteList/NoteList';
@@ -14,32 +14,19 @@ import css from './Notes.module.css';
 const PER_PAGE = 5;
 
 export default function NotesClient() {
-  const queryClient = useQueryClient();
-
   const [searchQuery, setSearchQuery] = useState('');
   const [debouncedSearch] = useDebounce(searchQuery, 500);
   const [page, setPage] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const { data, isLoading, error } = useQuery({
+  const { data, isLoading, error } = useQuery<FetchNotesResponse, Error>({
     queryKey: ['notes', page, debouncedSearch],
     queryFn: () =>
       fetchNotes({ page, perPage: PER_PAGE, search: debouncedSearch || undefined }),
     keepPreviousData: true,
+    staleTime: 1000 * 60,
+    refetchOnWindowFocus: false,
   });
-
-  const deleteMutation = useMutation({
-    mutationFn: (id: string) => deleteNote(id),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['notes'] });
-    },
-  });
-
-  const handleDelete = (id: string) => {
-    if (confirm('Are you sure you want to delete this note?')) {
-      deleteMutation.mutate(id);
-    }
-  };
 
   const handleSearchChange = (value: string) => {
     setPage(1);
@@ -47,12 +34,11 @@ export default function NotesClient() {
   };
 
   const handlePageChange = (newPage: number) => setPage(newPage);
-
   const handleOpenModal = () => setIsModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
 
   if (isLoading) return <p>Loading, please wait...</p>;
-  if (error) return <p>Could not fetch the list of notes. {(error as Error).message}</p>;
+  if (error) return <p>Could not fetch the list of notes. {error.message}</p>;
 
   return (
     <div className={css.app}>
@@ -63,7 +49,7 @@ export default function NotesClient() {
         </button>
       </div>
 
-      <NoteList notes={data?.notes || []} onDelete={handleDelete} />
+      <NoteList notes={data?.notes || []} />
 
       <Pagination
         currentPage={page}
