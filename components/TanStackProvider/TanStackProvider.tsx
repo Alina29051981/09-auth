@@ -8,16 +8,15 @@ interface Props {
 }
 
 export default function TanStackProvider({ children, dehydratedState }: Props) {
-  const [queryClient] = useState(
-    () =>
-      new QueryClient({
-        defaultOptions: {
-          queries: {
-            staleTime: 1000 * 60,
-            retry: 1,
-          },
+  const [queryClient] = useState(() => 
+    new QueryClient({
+      defaultOptions: {
+        queries: {
+          staleTime: 1000 * 60,
+          retry: 1,
         },
-      })
+      },
+    })
   );
 
   return (
@@ -26,4 +25,3 @@ export default function TanStackProvider({ children, dehydratedState }: Props) {
     </QueryClientProvider>
   );
 }
-

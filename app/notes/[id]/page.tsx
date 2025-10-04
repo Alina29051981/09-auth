@@ -3,14 +3,15 @@ import { fetchNoteById } from '../../../lib/api';
 import TanStackProvider from '../../../components/TanStackProvider/TanStackProvider';
 import NoteDetailsClient from './NoteDetails.client';
 
-interface NoteDetailsPageProps {
-  params: { id: string };
+interface NoteDetailsProps {
+  params: Promise<{ id: string }>;
 }
 
-export default async function NoteDetailsPage({ params }: NoteDetailsPageProps) {
-  const { id } = await params; 
+export default async function NoteDetails({ params }: NoteDetailsProps) {
+  const { id } = await params;
 
   const queryClient = new QueryClient();
+
   await queryClient.prefetchQuery({
     queryKey: ['note', id],
     queryFn: () => fetchNoteById(id),

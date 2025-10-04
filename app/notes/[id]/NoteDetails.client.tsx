@@ -9,17 +9,20 @@ interface NoteDetailsClientProps {
   id: string;
 }
 
-export default function NoteDetailsClient({ id }: NoteDetailsClientProps) {
+const NoteDetailsClient = ({ id }: NoteDetailsClientProps) => {
   const router = useRouter();
 
-  const { data: note, isLoading, error } = useQuery({
+  const {
+    data: note,
+    isLoading,
+    error,
+  } = useQuery({
     queryKey: ['note', id],
     queryFn: () => fetchNoteById(id),
-    enabled: !!id,
     refetchOnMount: false,
   });
 
-  if (isLoading) return <p>Loading, please wait...</p>;
+  if (isLoading) return <p>Loading...</p>;
   if (error || !note) return <p>Something went wrong.</p>;
 
   return (
@@ -52,4 +55,6 @@ export default function NoteDetailsClient({ id }: NoteDetailsClientProps) {
       </div>
     </div>
   );
-}
+};
+
+export default NoteDetailsClient;
