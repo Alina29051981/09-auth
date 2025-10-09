@@ -1,27 +1,21 @@
-import { dehydrate, QueryClient } from '@tanstack/react-query';
-import { fetchNoteById } from '../../../lib/api';
-import TanStackProvider from '../../../components/TanStackProvider/TanStackProvider';
+'use client';
+
+import { use } from 'react';
+import { useRouter } from 'next/navigation';
 import NoteDetailsClient from './NoteDetails.client';
 
-interface NoteDetailsProps {
+interface NoteDetailsPageProps {
   params: Promise<{ id: string }>;
 }
 
-export default async function NoteDetails({ params }: NoteDetailsProps) {
-  const { id } = await params;
-
-  const queryClient = new QueryClient();
-
-  await queryClient.prefetchQuery({
-    queryKey: ['note', id],
-    queryFn: () => fetchNoteById(id),
-  });
-
-  const dehydratedState = dehydrate(queryClient);
+export default function NoteDetailsPage({ params }: NoteDetailsPageProps) {
+  const { id } = use(params); 
+  const router = useRouter();
 
   return (
-    <TanStackProvider dehydratedState={dehydratedState}>
-      <NoteDetailsClient id={id} />
-    </TanStackProvider>
+    <NoteDetailsClient
+      noteId={id}
+      onClose={() => router.push('/notes/filter/All')}
+    />
   );
 }

@@ -11,43 +11,55 @@
       "static/chunks/main-app.js",
       "static/chunks/app/loading.js"
     ],
+    "/not-found": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/not-found.js"
+    ],
     "/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/css/app/page.css",
       "static/chunks/app/page.js"
     ],
-    "/notes/error": [
+    "/notes/filter/layout": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/notes/error.js"
+      "static/css/app/notes/filter/layout.css",
+      "static/chunks/app/notes/filter/layout.js"
     ],
-    "/notes/loading": [
+    "/notes/filter/[...slug]/layout": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/notes/loading.js"
+      "static/css/app/notes/filter/[...slug]/layout.css",
+      "static/chunks/app/notes/filter/[...slug]/layout.js"
     ],
-    "/notes/page": [
+    "/notes/filter/[...slug]/error": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/css/app/notes/page.css",
-      "static/chunks/app/notes/page.js"
+      "static/chunks/app/notes/filter/[...slug]/error.js"
     ],
-    "/notes/[id]/error": [
+    "/notes/filter/[...slug]/loading": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/notes/[id]/error.js"
+      "static/chunks/app/notes/filter/[...slug]/loading.js"
     ],
-    "/notes/[id]/loading": [
+    "/notes/filter/[...slug]/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/notes/[id]/loading.js"
+      "static/css/app/notes/filter/[...slug]/page.css",
+      "static/chunks/app/notes/filter/[...slug]/page.js"
     ],
-    "/notes/[id]/page": [
+    "/notes/filter/@sidebar/default": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/css/app/notes/[id]/page.css",
-      "static/chunks/app/notes/[id]/page.js"
+      "static/css/app/notes/filter/@sidebar/default.css",
+      "static/chunks/app/notes/filter/@sidebar/default.js"
+    ],
+    "/_not-found/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/_not-found/page.js"
     ]
   }
 }

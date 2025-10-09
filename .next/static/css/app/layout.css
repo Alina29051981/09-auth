@@ -22,14 +22,14 @@ body {
     color: white;
 }
 
-.Header_header__pXml_ a {
+.Header_headerLink__P1mBM {
     text-decoration: none;
     color: white;
     font-size: 1.5rem;
     font-weight: bold;
 }
 
-.Header_header__pXml_ a:hover {
+.Header_headerLink__P1mBM:hover {
     color: #ddd;
 }
 
@@ -41,13 +41,18 @@ body {
     gap: 1rem;
 }
 
-.Header_navigation__PxQ99 li a {
+.Header_navigationItem__P6w0s {
+    display: flex;
+    align-items: center;
+}
+
+.Header_navigationLink__JeobX {
     text-decoration: none;
     color: white;
     font-size: 1rem;
 }
 
-.Header_navigation__PxQ99 li a:hover {
+.Header_navigationLink__JeobX:hover {
     color: #ddd;
 }
 /*!*******************************************************************************************************************************************************************************************************************************************************************************!*\

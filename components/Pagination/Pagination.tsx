@@ -12,7 +12,8 @@ const Pagination: React.FC<PaginationProps> = ({
   currentPage,
   onPageChange,
 }) => {
-   const handlePageChange: ReactPaginateProps['onPageChange'] = (selectedItem) => {
+ 
+  const handlePageChange: ReactPaginateProps['onPageChange'] = (selectedItem) => {
     onPageChange(selectedItem.selected + 1);
   };
 

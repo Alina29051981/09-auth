@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import Link from 'next/link';
 import css from './NoteList.module.css';
 import { Note } from '../../types/note';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -9,9 +8,15 @@ import { deleteNote } from '../../lib/api';
 
 interface NoteListProps {
   notes: Note[];
+  onNoteClick?: (noteId: string) => void; 
 }
 
-const NoteListItem: React.FC<{ note: Note }> = React.memo(({ note }) => {
+interface NoteListItemProps {
+  note: Note;
+  onNoteClick?: (noteId: string) => void;
+}
+
+const NoteListItem: React.FC<NoteListItemProps> = React.memo(({ note, onNoteClick }) => {
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
@@ -21,9 +26,8 @@ const NoteListItem: React.FC<{ note: Note }> = React.memo(({ note }) => {
     },
   });
 
-  const handleDelete = () => {
-    mutation.mutate();
-  };
+  const handleDelete = () => mutation.mutate();
+  const handleViewDetails = () => onNoteClick?.(note.id);
 
   return (
     <li className={css.listItem}>
@@ -31,9 +35,11 @@ const NoteListItem: React.FC<{ note: Note }> = React.memo(({ note }) => {
       <p className={css.content}>{note.content}</p>
       <div className={css.footer}>
         <span className={css.tag}>{note.tag}</span>
-        <Link href={`/notes/${note.id}`} className={css.link}>
+
+        <button className={css.link} onClick={handleViewDetails}>
           View details
-        </Link>
+        </button>
+        
         <button className={css.button} onClick={handleDelete} disabled={mutation.isPending}>
           Delete
         </button>
@@ -43,15 +49,13 @@ const NoteListItem: React.FC<{ note: Note }> = React.memo(({ note }) => {
 });
 NoteListItem.displayName = 'NoteListItem';
 
-const NoteList: React.FC<NoteListProps> = ({ notes }) => {
-  if (notes.length === 0) {
-    return <p className={css.empty}>No notes found.</p>;
-  }
+const NoteList: React.FC<NoteListProps> = ({ notes, onNoteClick }) => {
+  if (notes.length === 0) return <p className={css.empty}>No notes found.</p>;
 
   return (
     <ul className={css.list}>
       {notes.map((note) => (
-        <NoteListItem key={note.id} note={note} />
+        <NoteListItem key={note.id} note={note} onNoteClick={onNoteClick} />
       ))}
     </ul>
   );

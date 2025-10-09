@@ -5,24 +5,24 @@ import css from './Modal.module.css';
 
 interface ModalProps {
   children: React.ReactNode;
-  onClose: () => void;
+  onClose?: () => void;
 }
 
 const Modal: React.FC<ModalProps> = ({ children, onClose }) => {
   const modalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (typeof document === 'undefined') return;
+    if (typeof window === 'undefined') return;
 
-        const originalOverflow = document.body.style.overflow;
+    const originalOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
 
-       const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && onClose) onClose();
     };
     document.addEventListener('keydown', onKey);
 
-        modalRef.current?.focus();
+    modalRef.current?.focus();
 
     return () => {
       document.body.style.overflow = originalOverflow;
@@ -31,10 +31,10 @@ const Modal: React.FC<ModalProps> = ({ children, onClose }) => {
   }, [onClose]);
 
   const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (e.currentTarget === e.target) onClose();
+    if (e.currentTarget === e.target && onClose) onClose();
   };
 
-  if (typeof document === 'undefined') return null;
+  if (typeof window === 'undefined') return null; 
 
   return ReactDOM.createPortal(
     <div
