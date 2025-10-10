@@ -1,1 +1,1 @@
-self.__INTERCEPTION_ROUTE_REWRITE_MANIFEST="[{\"source\":\"/notes/:id\",\"destination\":\"/(.)notes/:id\",\"has\":[{\"type\":\"header\",\"key\":\"next-url\",\"value\":\"(?:\\\\/(.*))?[\\\\/#\\\\?]?\"}],\"regex\":\"^\\\\/notes(?:\\\\/([^\\\\/]+?))(?:\\\\/)?$\"}]"
+self.__INTERCEPTION_ROUTE_REWRITE_MANIFEST="[{\"source\":\"/notes/:id\",\"destination\":\"/(.)notes/:id\",\"has\":[{\"type\":\"header\",\"key\":\"Next-Url\",\"value\":\"(?:\\\\/(.*))?[\\\\/#\\\\?]?\"}]}]"
