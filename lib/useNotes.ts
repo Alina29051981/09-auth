@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { fetchNotes, createNote, deleteNote, FetchNotesParams, FetchNotesResponse } from '../../../../lib/api';
-import { Note, CreateNoteDTO } from '../../../../types/note';
+import { fetchNotes, createNote, deleteNote, FetchNotesParams, FetchNotesResponse } from '../lib/api';
+import { Note, CreateNoteDTO } from '../types/note';
 
 export const useNotes = (params: FetchNotesParams) => {
   return useQuery<FetchNotesResponse, Error>({
