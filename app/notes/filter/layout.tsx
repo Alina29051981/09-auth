@@ -3,11 +3,11 @@ import styles from './[...slug]/LayoutNotes.module.css';
 interface NotesLayoutProps {
   children: React.ReactNode;
   sidebar: React.ReactNode;
-  sidebarWidth?: string | number; // Гнучка ширина sidebar
-  gap?: string | number;          // Відстань між sidebar і контентом
-  height?: string | number;       // Висота layout
-  sidebarBg?: string;             // Фон sidebar
-  contentBg?: string;             // Фон контенту
+  sidebarWidth?: string | number; 
+  gap?: string | number;          
+  height?: string | number;       
+  sidebarBg?: string;             
+  contentBg?: string;             
 }
 
 const NotesLayout = ({

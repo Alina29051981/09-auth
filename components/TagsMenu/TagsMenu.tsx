@@ -10,7 +10,6 @@ export default function TagsMenu() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
 
-  // Визначаємо активний тег з URL
   const currentTag = pathname?.split('/').pop() || 'All';
 
   const toggleMenu = () => setIsOpen(prev => !prev);

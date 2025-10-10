@@ -15,7 +15,6 @@ interface NoteListProps {
 export default function NoteList({ notes }: NoteListProps) {
   const queryClient = useQueryClient();
 
-  // ✅ Мутація для видалення нотатки
   const mutation = useMutation({
     mutationFn: (noteId: string) => deleteNote(noteId),
     onSuccess: () => {
@@ -42,7 +41,7 @@ export default function NoteList({ notes }: NoteListProps) {
   return (
     <ul className={css.list}>
       {notes
-        .filter((note) => Boolean(note.id)) // ✅ не рендеримо нотатки без id
+        .filter((note) => Boolean(note.id)) 
         .map((note) => (
           <li key={note.id} className={css.listItem}>
             <h2 className={css.title}>{note.title}</h2>

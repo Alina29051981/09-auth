@@ -19,7 +19,7 @@ export default function TanStackProvider({ children, dehydratedState }: Props) {
       new QueryClient({
         defaultOptions: {
           queries: {
-            staleTime: 1000 * 60, // 1 хвилина
+            staleTime: 1000 * 60, 
             retry: 1,
             refetchOnWindowFocus: false,
           },
