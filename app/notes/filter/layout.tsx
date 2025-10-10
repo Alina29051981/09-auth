@@ -1,47 +1,58 @@
-// app/notes/filter/layout.tsx
-import css from './@sidebar/SidebarNotes.module.css';
+import styles from './[...slug]/LayoutNotes.module.css';
 
-type Props = {
+interface NotesLayoutProps {
   children: React.ReactNode;
   sidebar: React.ReactNode;
-};
+  sidebarWidth?: string | number; // Гнучка ширина sidebar
+  gap?: string | number;          // Відстань між sidebar і контентом
+  height?: string | number;       // Висота layout
+  sidebarBg?: string;             // Фон sidebar
+  contentBg?: string;             // Фон контенту
+}
 
-const NotesLayout = ({ children, sidebar }: Props) => {
+const NotesLayout = ({
+  children,
+  sidebar,
+  sidebarWidth = '250px',
+  gap = 16,
+  height = '100vh',
+  sidebarBg = '#333',
+  contentBg = '#fff',
+}: NotesLayoutProps) => {
   return (
-    <div
-      className={css.container}
+    <section
+      className={styles.container}
       style={{
-        display: 'flex',       
-        height: '100vh',        
-        gap: 16,               
+        display: 'flex',
+        gap,
+        height,
       }}
     >
-    
-      <div
-        className={css.sidebar}
+      <aside
+        className={styles.sidebar}
         style={{
-          flex: '0 0 250px',   
-          background: '#333',
+          flex: `0 0 ${sidebarWidth}`,
+          background: sidebarBg,
           padding: 16,
           overflowY: 'auto',
           borderRight: '1px solid #ddd',
         }}
       >
         {sidebar}
-      </div>
+      </aside>
 
-          <div
-        className={css.content}
+      <div
+        className={styles.notesWrapper}
         style={{
-          flex: 1,             
+          flex: 1,
           padding: 16,
           overflowY: 'auto',
-          background: '#fff',
+          background: contentBg,
         }}
       >
         {children}
       </div>
-    </div>
+    </section>
   );
 };
 

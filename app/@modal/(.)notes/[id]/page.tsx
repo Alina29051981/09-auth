@@ -1,34 +1,29 @@
-'use client';
-
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import Modal from '../../../../components/Modal/Modal';
-import NotePreview from '../../../../components/NotePreview/NotePreview';
+// app/notes/[id]/page.tsx
 import { fetchNoteById } from '../../../../lib/api';
-import { Note } from '../../../../types/note';
+import NotePreviewClient from './NotePreview.client';
+import { dehydrate, QueryClient, HydrationBoundary } from '@tanstack/react-query';
+import styles from './NotePreview.module.css';
 
-interface NoteModalPageProps {
-  params: { slug: string[] };
+interface NotePageProps {
+  params: Promise<{ id: string }>;
 }
 
-export default function NoteModalPage({ params }: NoteModalPageProps) {
-  const { slug } = params;
-  const noteId = slug[0];
+  export default async function NotePage({ params }: NotePageProps) {
+ const { id } = await params; 
 
-  const router = useRouter();
-  const [note, setNote] = useState<Note | null>(null);
+  const queryClient = new QueryClient();
 
-  useEffect(() => {
-    if (noteId) fetchNoteById(noteId).then(setNote);
-  }, [noteId]);
-
-  const handleClose = () => router.back();
-
-  if (!note) return null;
+  // Попереднє завантаження даних на сервері
+  await queryClient.prefetchQuery({
+    queryKey: ['note', id],
+    queryFn: () => fetchNoteById(id),
+  });
 
   return (
-    <Modal onClose={handleClose}>
-      <NotePreview note={note} />
-    </Modal>
+    <div className={styles.wrapper}>
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        <NotePreviewClient />
+      </HydrationBoundary>
+    </div>
   );
 }

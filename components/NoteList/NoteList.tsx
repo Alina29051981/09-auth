@@ -1,64 +1,63 @@
 'use client';
 
-import React from 'react';
-import css from './NoteList.module.css';
-import { Note } from '../../types/note';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import Link from 'next/link';
+import toast from 'react-hot-toast';
+import type { Note } from '../../types/note';
 import { deleteNote } from '../../lib/api';
+import css from './NoteList.module.css';
 
 interface NoteListProps {
   notes: Note[];
   onNoteClick?: (noteId: string) => void; 
 }
 
-interface NoteListItemProps {
-  note: Note;
-  onNoteClick?: (noteId: string) => void;
-}
-
-const NoteListItem: React.FC<NoteListItemProps> = React.memo(({ note, onNoteClick }) => {
+export default function NoteList({ notes }: NoteListProps) {
   const queryClient = useQueryClient();
 
+  // Мутація для видалення нотатки
   const mutation = useMutation({
-    mutationFn: () => deleteNote(note.id),
+    mutationFn: (noteId: string) => deleteNote(noteId),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['notes'] });
+      toast.success('Note deleted successfully!');
+      queryClient.invalidateQueries({ queryKey: ['notesList'] });
+    },
+    onError: (error: Error) => {
+      toast.error(`Failed to delete note: ${error.message}`);
     },
   });
 
-  const handleDelete = () => mutation.mutate();
-  const handleViewDetails = () => onNoteClick?.(note.id);
+  const handleDelete = (noteId: string) => {
+    mutation.mutate(noteId);
+  };
 
-  return (
-    <li className={css.listItem}>
-      <h2 className={css.title}>{note.title}</h2>
-      <p className={css.content}>{note.content}</p>
-      <div className={css.footer}>
-        <span className={css.tag}>{note.tag}</span>
-
-        <button className={css.link} onClick={handleViewDetails}>
-          View details
-        </button>
-        
-        <button className={css.button} onClick={handleDelete} disabled={mutation.isPending}>
-          Delete
-        </button>
-      </div>
-    </li>
-  );
-});
-NoteListItem.displayName = 'NoteListItem';
-
-const NoteList: React.FC<NoteListProps> = ({ notes, onNoteClick }) => {
-  if (notes.length === 0) return <p className={css.empty}>No notes found.</p>;
+  if (!notes.length) {
+    return <p className={css.empty}>No notes found.</p>;
+  }
 
   return (
     <ul className={css.list}>
-      {notes.map((note) => (
-        <NoteListItem key={note.id} note={note} onNoteClick={onNoteClick} />
+      {notes.map(note => (
+        <li key={note.id} className={css.listItem}>
+          <h2 className={css.title}>{note.title}</h2>
+          <p className={css.content}>{note.content}</p>
+          <div className={css.footer}>
+            <span className={css.tag}>{note.tag}</span>
+
+            <Link href={`/notes/${note.id}`} className={css.link}>
+              View details
+            </Link>
+
+            <button
+              className={css.button}
+              onClick={() => handleDelete(note.id)}
+              disabled={mutation.isPending}
+            >
+              {mutation.isPending ? 'Deleting...' : 'Delete'}
+            </button>
+          </div>
+        </li>
       ))}
     </ul>
   );
-};
-
-export default NoteList;
+}

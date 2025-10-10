@@ -36,8 +36,7 @@ export default function NotesClient({ filterTag }: NotesClientProps) {
         search: debouncedSearch || undefined,
         tag: filterTag === 'All' ? undefined : filterTag,
       }),
-    keepPreviousData: true,
-    staleTime: 1000 * 60,
+      staleTime: 1000 * 60,
     refetchOnWindowFocus: false,
   });
 
@@ -69,13 +68,13 @@ export default function NotesClient({ filterTag }: NotesClientProps) {
 
         <NoteList notes={data?.notes || []} onNoteClick={handleOpenNotePreview} />
 
-        {data?.totalNumberOfPages > 1 && (
-          <Pagination
-            currentPage={page}
-            totalNumberOfPages={data.totalNumberOfPages}
-            onPageChange={handlePageChange}
-          />
-        )}
+       {data && data.totalNumberOfPages > 1 && (
+  <Pagination
+    currentPage={page}
+    totalNumberOfPages={data.totalNumberOfPages}
+    onPageChange={handlePageChange}
+  />
+)}
 
         {isNewNoteModalOpen && (
           <Modal onClose={handleCloseNewNoteModal}>
