@@ -1,33 +1,45 @@
 'use client';
 
 import { useState } from 'react';
+import {
+  QueryClient,
+  QueryClientProvider,
+  useQuery,
+  useMutation,
+  useQueryClient,
+  hydrate,
+  DehydratedState,
+} from '@tanstack/react-query';
 import { useDebounce } from 'use-debounce';
-import { useQuery } from '@tanstack/react-query';
-import { useRouter } from 'next/navigation';
-import { fetchNotes, FetchNotesResponse } from '../../../../lib/api';
+import { fetchNotes, deleteNote, FetchNotesResponse } from '../../../../lib/api';
 import SearchBox from '../../../../components/SearchBox/SearchBox';
 import Pagination from '../../../../components/Pagination/Pagination';
 import NoteList from '../../../../components/NoteList/NoteList';
 import NoteForm from '../../../../components/NoteForm/NoteForm';
-import { NoteTag } from '../../../../types/note';
 import Modal from '../../../../components/Modal/Modal';
+import { NoteTag } from '../../../../types/note';
+import toast from 'react-hot-toast';
 import css from './Notes.module.css';
 
 const PER_PAGE = 5;
 
 interface NotesClientProps {
   filterTag?: NoteTag | 'All';
+  dehydratedState?: DehydratedState;
 }
 
-export default function NotesClient({ filterTag }: NotesClientProps) {
+export default function NotesClient({ filterTag, dehydratedState }: NotesClientProps) {
+  const [queryClient] = useState(() => new QueryClient());
   const [page, setPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState('');
   const [debouncedSearch] = useDebounce(searchQuery, 500);
   const [isNewNoteModalOpen, setIsNewNoteModalOpen] = useState(false);
 
-  const router = useRouter();
+  if (dehydratedState) hydrate(queryClient, dehydratedState);
 
-  const { data, isLoading, error } = useQuery<FetchNotesResponse, Error>({
+  const queryClientInstance = useQueryClient();
+
+   const { data, isLoading, error } = useQuery<FetchNotesResponse, Error>({
     queryKey: ['notes', page, debouncedSearch, filterTag],
     queryFn: () =>
       fetchNotes({
@@ -36,8 +48,19 @@ export default function NotesClient({ filterTag }: NotesClientProps) {
         search: debouncedSearch || undefined,
         tag: filterTag === 'All' ? undefined : filterTag,
       }),
-      staleTime: 1000 * 60,
+    staleTime: 1000 * 60,
     refetchOnWindowFocus: false,
+  });
+
+   const deleteMutation = useMutation({
+    mutationFn: (noteId: string) => deleteNote(noteId),
+    onSuccess: () => {
+      queryClientInstance.invalidateQueries({ queryKey: ['notes'] });
+      toast.success('Note deleted successfully!');
+    },
+    onError: (error: Error) => {
+      toast.error(`Failed to delete note: ${error.message}`);
+    },
   });
 
   const handleSearchChange = (value: string) => {
@@ -49,16 +72,17 @@ export default function NotesClient({ filterTag }: NotesClientProps) {
   const handleOpenNewNoteModal = () => setIsNewNoteModalOpen(true);
   const handleCloseNewNoteModal = () => setIsNewNoteModalOpen(false);
 
-   const handleOpenNotePreview = (noteId: string) => {
-    router.push(`/@modal/(.)notes/${noteId}`);
+  const handleDeleteNote = (noteId: string) => {
+    if (!noteId) {
+      toast.error('Note ID is missing.');
+      return;
+    }
+    deleteMutation.mutate(noteId);
   };
 
-  if (isLoading) return <p className={css.loading}>Loading notes...</p>;
-  if (error) return <p className={css.error}>Could not fetch notes. {error.message}</p>;
-
   return (
-    <div className={css.app}>
-      <div className={css.main}>
+    <QueryClientProvider client={queryClient}>
+      <div className={css.app}>
         <div className={css.toolbar}>
           <SearchBox value={searchQuery} onChange={handleSearchChange} />
           <button className={css.button} onClick={handleOpenNewNoteModal}>
@@ -66,15 +90,23 @@ export default function NotesClient({ filterTag }: NotesClientProps) {
           </button>
         </div>
 
-        <NoteList notes={data?.notes || []} onNoteClick={handleOpenNotePreview} />
+        {isLoading && <p className={css.loading}>Loading notes...</p>}
+        {error && <p className={css.error}>Could not fetch notes: {error.message}</p>}
 
-       {data && data.totalNumberOfPages > 1 && (
-  <Pagination
-    currentPage={page}
-    totalNumberOfPages={data.totalNumberOfPages}
-    onPageChange={handlePageChange}
-  />
-)}
+        {data && (
+          <>
+            <NoteList notes={data.notes} onDelete={handleDeleteNote} />
+            {data.totalNumberOfPages > 1 && (
+              <div>
+                <Pagination
+                  currentPage={page}
+                  totalNumberOfPages={data.totalNumberOfPages}
+                  onPageChange={handlePageChange}
+                />
+              </div>
+            )}
+          </>
+        )}
 
         {isNewNoteModalOpen && (
           <Modal onClose={handleCloseNewNoteModal}>
@@ -82,6 +114,6 @@ export default function NotesClient({ filterTag }: NotesClientProps) {
           </Modal>
         )}
       </div>
-    </div>
+    </QueryClientProvider>
   );
 }

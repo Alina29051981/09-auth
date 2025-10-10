@@ -1,3 +1,60 @@
 {
-  "pages": {}
+  "pages": {
+    "/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/page.css",
+      "static/chunks/app/page.js"
+    ],
+    "/@modal/default": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/@modal/default.js"
+    ],
+    "/layout": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/layout.css",
+      "static/chunks/app/layout.js"
+    ],
+    "/loading": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/loading.js"
+    ],
+    "/not-found": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/not-found.js"
+    ],
+    "/notes/filter/[...slug]/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/notes/filter/[...slug]/page.css",
+      "static/chunks/app/notes/filter/[...slug]/page.js"
+    ],
+    "/notes/filter/[...slug]/error": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/notes/filter/[...slug]/error.js"
+    ],
+    "/notes/filter/@sidebar/default": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/notes/filter/@sidebar/default.css",
+      "static/chunks/app/notes/filter/@sidebar/default.js"
+    ],
+    "/notes/filter/layout": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/notes/filter/layout.css",
+      "static/chunks/app/notes/filter/layout.js"
+    ],
+    "/@modal/(.)notes/[id]/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/@modal/(.)notes/[id]/page.css",
+      "static/chunks/app/@modal/(.)notes/[id]/page.js"
+    ]
+  }
 }

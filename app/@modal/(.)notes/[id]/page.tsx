@@ -1,4 +1,3 @@
-// app/notes/[id]/page.tsx
 import { fetchNoteById } from '../../../../lib/api';
 import NotePreviewClient from './NotePreview.client';
 import { dehydrate, QueryClient, HydrationBoundary } from '@tanstack/react-query';
@@ -13,7 +12,6 @@ interface NotePageProps {
 
   const queryClient = new QueryClient();
 
-  // Попереднє завантаження даних на сервері
   await queryClient.prefetchQuery({
     queryKey: ['note', id],
     queryFn: () => fetchNoteById(id),

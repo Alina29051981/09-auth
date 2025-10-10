@@ -1,25 +1,38 @@
 import NotesClient from './Notes.client';
 import { NOTE_TAGS, type NoteTag } from '../../../../types/note';
-import '../../../globals.css'; 
+import { QueryClient, dehydrate } from '@tanstack/react-query';
+import { fetchNotes } from '../../../../lib/api';
+import '../../../globals.css';
 
-
-type NotesPageProps = {
-  params: Promise<{ slug: string[] }>;
-};
+interface NotesPageProps {
+  params: { slug: string[] };
+}
 
 export default async function NotesPage({ params }: NotesPageProps) {
-  const { slug } = await params;
+  const { slug } = params;
 
-    let filterTag: NoteTag | 'All';
-  if (!slug || slug.length === 0 || slug[0] === 'All') {
-    filterTag = 'All';
-  } else if (NOTE_TAGS.includes(slug[0] as NoteTag)) {
-    filterTag = slug[0] as NoteTag;
-  } else {
-    filterTag = 'All';
-  }
+  const filterTag: NoteTag | 'All' =
+    !slug || slug.length === 0 || slug[0] === 'All'
+      ? 'All'
+      : NOTE_TAGS.includes(slug[0] as NoteTag)
+      ? (slug[0] as NoteTag)
+      : 'All';
 
-  return <div className="body">
-             <NotesClient filterTag={filterTag} />
-    </div>;
+  const queryClient = new QueryClient();
+
+   await queryClient.prefetchQuery({
+    queryKey: ['notes', 1, '', filterTag],
+    queryFn: () =>
+      fetchNotes({
+        page: 1,
+        perPage: 5,
+        tag: filterTag === 'All' ? undefined : filterTag,
+      }),
+  });
+
+  const dehydratedState = dehydrate(queryClient);
+
+  return (
+    <NotesClient filterTag={filterTag} dehydratedState={dehydratedState} />
+  );
 }
