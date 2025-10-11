@@ -1,7 +1,7 @@
 import { use } from 'react';
 import { useRouter } from 'next/navigation';
 import NoteDetailsClient from './NoteDetails.client';
-import { type Metadata } from 'next';
+import type { Metadata } from 'next';
 import { getNoteById } from '../../../lib/api';
 
 export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
