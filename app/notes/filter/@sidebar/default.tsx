@@ -1,5 +1,3 @@
-'use client';
-
 import Link from 'next/link';
 import styles from './SidebarNotes.module.css';
 import { type NoteTag } from '../../../../types/note';

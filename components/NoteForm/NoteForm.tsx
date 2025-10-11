@@ -1,10 +1,10 @@
+'use client';
+
 import React from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import css from './NoteForm.module.css';
-import { useCreateNote } from '../../lib/useNotes';
 import { NoteTag, NOTE_TAGS } from '../../types/note';
-import { useQueryClient } from '@tanstack/react-query';
 
 const schema = Yup.object().shape({
   title: Yup.string().min(3).max(50).required('Required'),
@@ -14,12 +14,10 @@ const schema = Yup.object().shape({
 
 export interface NoteFormProps {
   onClose?: () => void;
+  onSubmit?: (data: { title: string; content: string; tag: NoteTag }) => void;
 }
 
-const NoteForm: React.FC<NoteFormProps> = ({ onClose }) => {
-  const queryClient = useQueryClient();
-  const createMut = useCreateNote();
-
+const NoteForm: React.FC<NoteFormProps> = ({ onClose, onSubmit }) => {
   return (
     <div className={css.modalOverlay} onClick={onClose}>
       <div className={css.modalContent} onClick={(e) => e.stopPropagation()}>
@@ -27,22 +25,13 @@ const NoteForm: React.FC<NoteFormProps> = ({ onClose }) => {
           initialValues={{ title: '', content: '', tag: 'Todo' as NoteTag }}
           validationSchema={schema}
           onSubmit={(values, { setSubmitting }) => {
-            createMut.mutate(values, {
-              onSuccess: () => {
-                queryClient.invalidateQueries({ queryKey: ['notes'] });
-                onClose?.();
-                setSubmitting(false);
-              },
-              onError: (err) => {
-                console.error(err);
-                setSubmitting(false);
-              },
-            });
+            onSubmit?.(values);
+            setSubmitting(false);
+            onClose?.();
           }}
         >
           {({ isSubmitting }) => (
             <Form className={css.form}>
-              
               <h2 className={css.formHeader}>Create Note</h2>
 
               <div className={css.formGroup}>
@@ -71,8 +60,8 @@ const NoteForm: React.FC<NoteFormProps> = ({ onClose }) => {
                 <button type="button" className={css.cancelButton} onClick={onClose}>
                   Cancel
                 </button>
-                <button type="submit" className={css.submitButton} disabled={isSubmitting || createMut.isPending}>
-                  {createMut.isPending ? 'Saving...' : 'Create note'}
+                <button type="submit" className={css.submitButton} disabled={isSubmitting}>
+                  {isSubmitting ? 'Saving...' : 'Create note'}
                 </button>
               </div>
             </Form>

@@ -42,7 +42,7 @@ export const fetchNotes = async (
   return {
     notes: data.notes,
     totalNumberOfPages: data.totalPages,
-  };
+     };
 };
 
 export const createNote = async (dto: CreateNoteDTO): Promise<Note> => {
