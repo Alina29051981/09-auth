@@ -1,75 +1,110 @@
 'use client';
 
-import React from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
+import { FormEvent } from 'react';
+import { useRouter } from 'next/navigation';
+import { useNoteStore } from '../../lib/noteStore';
+import { NOTE_TAGS } from '../../types/note';
 import css from './NoteForm.module.css';
-import { NoteTag, NOTE_TAGS } from '../../types/note';
+import { createNote } from '../../lib/api';
+import toast from 'react-hot-toast';
 
-const schema = Yup.object().shape({
-  title: Yup.string().min(3).max(50).required('Required'),
-  content: Yup.string().max(500),
-  tag: Yup.mixed<NoteTag>().oneOf(NOTE_TAGS).required('Required'),
-});
+export default function NoteForm() {
+  const router = useRouter();
+  const { draft, setDraft, clearDraft } = useNoteStore();
 
-export interface NoteFormProps {
-  onClose?: () => void;
-  onSubmit?: (data: { title: string; content: string; tag: NoteTag }) => void;
-}
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+    setDraft({ [name]: value } as Partial<typeof draft>);
+  };
 
-const NoteForm: React.FC<NoteFormProps> = ({ onClose, onSubmit }) => {
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    try {
+      await createNote(draft);
+      toast.success('Note created successfully!');
+      clearDraft();
+      router.back();
+    } catch {
+      toast.error('Failed to create note');
+    }
+  };
+
+  const handleCancel = () => {
+    router.back();
+  };
+
   return (
-    <div className={css.modalOverlay} onClick={onClose}>
-      <div className={css.modalContent} onClick={(e) => e.stopPropagation()}>
-        <Formik
-          initialValues={{ title: '', content: '', tag: 'Todo' as NoteTag }}
-          validationSchema={schema}
-          onSubmit={(values, { setSubmitting }) => {
-            onSubmit?.(values);
-            setSubmitting(false);
-            onClose?.();
-          }}
-        >
-          {({ isSubmitting }) => (
-            <Form className={css.form}>
-              <h2 className={css.formHeader}>Create Note</h2>
-
-              <div className={css.formGroup}>
-                <label htmlFor="title">Title</label>
-                <Field id="title" name="title" className={css.input} />
-                <div className={css.error}><ErrorMessage name="title" /></div>
-              </div>
-
-              <div className={css.formGroup}>
-                <label htmlFor="content">Content</label>
-                <Field as="textarea" id="content" name="content" rows={8} className={css.textarea} />
-                <div className={css.error}><ErrorMessage name="content" /></div>
-              </div>
-
-              <div className={css.formGroup}>
-                <label htmlFor="tag">Tag</label>
-                <Field as="select" id="tag" name="tag" className={css.select}>
-                  {NOTE_TAGS.map(tag => (
-                    <option key={tag} value={tag}>{tag}</option>
-                  ))}
-                </Field>
-                <div className={css.error}><ErrorMessage name="tag" /></div>
-              </div>
-
-              <div className={css.actions}>
-                <button type="button" className={css.cancelButton} onClick={onClose}>
-                  Cancel
-                </button>
-                <button type="submit" className={css.submitButton} disabled={isSubmitting}>
-                  {isSubmitting ? 'Saving...' : 'Create note'}
-                </button>
-              </div>
-            </Form>
-          )}
-        </Formik>
+    <form
+      className={css.form}
+      onSubmit={handleSubmit}
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        gap: '16px',
+        padding: '24px',
+      }}
+    >
+     
+      <div className={css.formGroup} style={{ width: '300px', display: 'flex', flexDirection: 'column' }}>
+        <label htmlFor="title" style={{ fontSize: '18px', marginBottom: '4px' }}>Title</label>
+        <input
+          id="title"
+          name="title"
+          value={draft.title}
+          onChange={handleChange}
+          required
+          style={{ fontSize: '16px', padding: '8px', width: '100%' }}
+        />
       </div>
-    </div>
-  );
-};
 
-export default NoteForm;
+      <div className={css.formGroup} style={{ width: '300px', display: 'flex', flexDirection: 'column' }}>
+        <label htmlFor="content" style={{ fontSize: '18px', marginBottom: '4px' }}>Content</label>
+        <textarea
+          id="content"
+          name="content"
+          value={draft.content}
+          onChange={handleChange}
+          style={{ fontSize: '16px', padding: '8px', width: '100%', height: '120px' }}
+        />
+      </div>
+
+      <div className={css.formGroup} style={{ width: '300px', display: 'flex', flexDirection: 'column' }}>
+        <label htmlFor="tag" style={{ fontSize: '18px', marginBottom: '4px' }}>Tag</label>
+        <select
+          id="tag"
+          name="tag"
+          value={draft.tag}
+          onChange={handleChange}
+          style={{ fontSize: '16px', padding: '8px', width: '100%' }}
+        >
+          {NOTE_TAGS.map((tag) => (
+            <option key={tag} value={tag}>
+              {tag}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div className={css.actions} style={{ display: 'flex', gap: '12px', marginTop: '16px' }}>
+        <button
+          type="button"
+          className={css.cancelButton}
+          onClick={handleCancel}
+          style={{ fontSize: '16px', padding: '8px 16px' }}
+        >
+          Cancel
+        </button>
+        <button
+          type="submit"
+          className={css.submitButton}
+          style={{ fontSize: '16px', padding: '8px 16px' }}
+        >
+          Create note
+        </button>
+      </div>
+    </form>
+  );
+}

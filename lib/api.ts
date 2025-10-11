@@ -59,3 +59,15 @@ export const fetchNoteById = async (id: string): Promise<Note> => {
    const { data } = await api.get<Note>(`/notes/${id}`);
   return data;
 };
+
+export async function getNoteById(id: string): Promise<Note> {
+  return {
+    id,
+    title: `Mock Note ${id}`,
+    content: 'This is a mock note used for testing metadata generation.',
+    tag: 'Todo',
+    createdAt: new Date().toISOString(),
+     updatedAt: new Date().toISOString(),
+  };
+}
+

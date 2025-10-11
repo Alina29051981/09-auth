@@ -55,11 +55,11 @@
       "static/css/app/notes/filter/layout.css",
       "static/chunks/app/notes/filter/layout.js"
     ],
-    "/@modal/(.)notes/[id]/page": [
+    "/notes/action/create/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/css/app/@modal/(.)notes/[id]/page.css",
-      "static/chunks/app/@modal/(.)notes/[id]/page.js"
+      "static/css/app/notes/action/create/page.css",
+      "static/chunks/app/notes/action/create/page.js"
     ]
   }
 }
