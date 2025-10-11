@@ -1,6 +1,1 @@
-{
-  "/page": "app/page.js",
-  "/notes/action/create/page": "app/notes/action/create/page.js",
-  "/_not-found/page": "app/_not-found/page.js",
-  "/notes/filter/[...slug]/page": "app/notes/filter/[...slug]/page.js"
-}
+{}
