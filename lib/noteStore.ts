@@ -30,3 +30,4 @@ export const useNoteStore = create<NoteStore>()(
     { name: 'note-draft' }
   )
 );
+

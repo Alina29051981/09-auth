@@ -10,6 +10,7 @@ export const metadata = {
     description: 'Create a new note in NoteHub',
     url: 'https://08-zustand-seven-iota.vercel.app/notes/action/create',
     images: ['https://ac.goit.global/fullstack/react/notehub-og-meta.jpg'],
+      type: 'website',
   },
 };
 
