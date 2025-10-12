@@ -3,13 +3,15 @@
 import { FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import { useNoteStore } from '../../lib/noteStore';
-import { NOTE_TAGS } from '../../types/note';
+import { NOTE_TAGS, Note } from '../../types/note';
 import css from './NoteForm.module.css';
-import { createNote } from '../../lib/api';
+import { createNote, FetchNotesResponse } from '../../lib/api';
 import toast from 'react-hot-toast';
+import { useQueryClient } from '@tanstack/react-query';
 
 export default function NoteForm() {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const { draft, setDraft, clearDraft } = useNoteStore();
 
   const handleChange = (
@@ -22,16 +24,29 @@ export default function NoteForm() {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     try {
-      await createNote(draft);
-      toast.success('Note created successfully!');
+      const newNote: Note = await createNote(draft);
+
+      // Оновлюємо всі сторінки notes у кеші, щоб одразу відобразити нову нотатку
+      queryClient.setQueriesData<FetchNotesResponse>(
+        { queryKey: ['notes'] },
+        (oldData) => {
+          if (!oldData) return { notes: [newNote], totalNumberOfPages: 1 };
+          if (oldData.notes.some((note) => note.id === newNote.id)) return oldData;
+
+          return { ...oldData, notes: [newNote, ...oldData.notes] };
+        }
+      );
+
       clearDraft();
-      router.back();
+      toast.success('Note created successfully!');
+      router.back(); // повертаємо на попередню сторінку
     } catch {
       toast.error('Failed to create note');
     }
   };
 
   const handleCancel = () => {
+    // draft не очищаємо, щоб користувач міг повернутися до незавершеної нотатки
     router.back();
   };
 
@@ -47,7 +62,6 @@ export default function NoteForm() {
         padding: '24px',
       }}
     >
-     
       <div className={css.formGroup} style={{ width: '300px', display: 'flex', flexDirection: 'column' }}>
         <label htmlFor="title" style={{ fontSize: '18px', marginBottom: '4px' }}>Title</label>
         <input
