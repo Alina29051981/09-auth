@@ -1,10 +1,10 @@
 {
   "pages": {
-    "/page": [
+    "/notes/action/create/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/css/app/page.css",
-      "static/chunks/app/page.js"
+      "static/css/app/notes/action/create/page.css",
+      "static/chunks/app/notes/action/create/page.js"
     ],
     "/@modal/default": [
       "static/chunks/webpack.js",
@@ -27,10 +27,11 @@
       "static/chunks/main-app.js",
       "static/chunks/app/not-found.js"
     ],
-    "/_not-found/page": [
+    "/@modal/(.)notes/[id]/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/_not-found/page.js"
+      "static/css/app/@modal/(.)notes/[id]/page.css",
+      "static/chunks/app/@modal/(.)notes/[id]/page.js"
     ],
     "/notes/filter/[...slug]/page": [
       "static/chunks/webpack.js",
@@ -54,18 +55,6 @@
       "static/chunks/main-app.js",
       "static/css/app/notes/filter/layout.css",
       "static/chunks/app/notes/filter/layout.js"
-    ],
-    "/notes/action/create/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/notes/action/create/page.css",
-      "static/chunks/app/notes/action/create/page.js"
-    ],
-    "/@modal/(.)notes/[id]/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/@modal/(.)notes/[id]/page.css",
-      "static/chunks/app/@modal/(.)notes/[id]/page.js"
     ]
   }
 }

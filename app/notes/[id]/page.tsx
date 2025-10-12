@@ -1,6 +1,11 @@
+import NoteDetailsClient from './NoteDetails.client';
 import { fetchNoteById } from '../../../lib/api';
 
-export async function generateMetadata({ params }: { params: { id: string } }) {
+interface PageProps {
+  params: { id: string };
+}
+
+export async function generateMetadata({ params }: PageProps) {
   const note = await fetchNoteById(params.id);
 
   return {
@@ -21,4 +26,8 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
       type: 'article',
     },
   };
+}
+
+export default function NotePage({ params }: PageProps) {
+   return <NoteDetailsClient noteId={params.id} />;
 }
