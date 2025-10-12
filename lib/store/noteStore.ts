@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist, PersistStorage } from 'zustand/middleware';
-import { Note, NoteTag } from '../types/note';
+import { Note, NoteTag } from '../../types/note';
 
 export interface Draft {
   title: string;

@@ -4,7 +4,7 @@ import { FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 import { createNote } from '../../lib/api';
-import { useNoteStore } from '../../lib/noteStore';
+import { useNoteStore } from '../../lib/store/noteStore';
 import { NOTE_TAGS, Note } from '../../types/note';
 import css from './NoteForm.module.css';
 
