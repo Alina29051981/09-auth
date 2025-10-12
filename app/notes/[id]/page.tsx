@@ -1,5 +1,3 @@
-import { useRouter } from 'next/navigation';
-import NoteDetailsClient from './NoteDetails.client';
 import { fetchNoteById } from '../../../lib/api';
 
 export async function generateMetadata({ params }: { params: { id: string } }) {
@@ -23,19 +21,4 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
       type: 'article',
     },
   };
-}
-
-interface NoteDetailsPageProps {
-  params: { id: string };
-}
-
-export default function NoteDetailsPage({ params }: NoteDetailsPageProps) {
-  const router = useRouter();
-
-  return (
-    <NoteDetailsClient
-      noteId={params.id}
-      onClose={() => router.push('/notes/filter/All')}
-    />
-  );
 }

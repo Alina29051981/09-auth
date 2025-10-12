@@ -1,6 +1,7 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation'; // додаємо useRouter
 import { fetchNoteById } from '../../../lib/api';
 import css from './NoteDetails.module.css';
 
@@ -18,6 +19,7 @@ interface Note {
 }
 
 const NoteDetailsClient: React.FC<NoteDetailsClientProps> = ({ noteId, onClose }) => {
+  const router = useRouter(); // тут useRouter
   const { data: note, isLoading, error } = useQuery<Note>({
     queryKey: ['note', noteId],
     queryFn: () => fetchNoteById(noteId),
@@ -27,28 +29,34 @@ const NoteDetailsClient: React.FC<NoteDetailsClientProps> = ({ noteId, onClose }
   if (isLoading) return <p>Loading...</p>;
   if (error || !note) return <p>Something went wrong.</p>;
 
+  const handleClose = () => {
+    if (onClose) {
+      onClose();
+    } else {
+      router.push('/notes/filter/All'); // дефолтна навігація
+    }
+  };
+
   return (
     <div className={css.container} style={{ position: 'relative' }}>
-      {onClose && (
-        <button
-          onClick={onClose}
-          aria-label="Close"
-          style={{
-            position: 'absolute',
-            top: 8,
-            right: 8,
-            background: 'transparent',
-            border: 'none',
-            fontSize: 28,
-            fontWeight: 'bold',
-            cursor: 'pointer',
-            zIndex: 10,
-            color: '#333',
-          }}
-        >
-          ×
-        </button>
-      )}
+      <button
+        onClick={handleClose}
+        aria-label="Close"
+        style={{
+          position: 'absolute',
+          top: 8,
+          right: 8,
+          background: 'transparent',
+          border: 'none',
+          fontSize: 28,
+          fontWeight: 'bold',
+          cursor: 'pointer',
+          zIndex: 10,
+          color: '#333',
+        }}
+      >
+        ×
+      </button>
 
       <div className={css.item}>
         <div className={css.header}>
