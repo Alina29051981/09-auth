@@ -1,4 +1,4 @@
-// app/layout.tsx
+import type { Metadata } from 'next';
 import Header from '../components/Header/Header';
 import Footer from '../components/Footer/Footer';
 import TanStackProvider from '../components/TanStackProvider/TanStackProvider';
@@ -12,7 +12,7 @@ const roboto = Roboto({
   variable: '--font-roboto',
 });
 
-export const metadata = {
+export const metadata: Metadata = {
   title: '08-zustand - NoteHub',
   description: 'A program for taking notes.',
   openGraph: {
@@ -22,7 +22,6 @@ export const metadata = {
     images: ['https://ac.goit.global/fullstack/react/notehub-og-meta.jpg'],
   },
 };
-
 
 export default function RootLayout({
   children,
@@ -36,7 +35,7 @@ export default function RootLayout({
       <body>
         <TanStackProvider>
           <Header />
-                    {children}
+          {children}
           {modal}
           <Footer />
         </TanStackProvider>

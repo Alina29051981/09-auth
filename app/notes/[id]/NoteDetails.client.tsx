@@ -1,7 +1,7 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { useRouter } from 'next/navigation'; // додаємо useRouter
+import { useRouter } from 'next/navigation';
 import { fetchNoteById } from '../../../lib/api';
 import css from './NoteDetails.module.css';
 
@@ -19,7 +19,7 @@ interface Note {
 }
 
 const NoteDetailsClient: React.FC<NoteDetailsClientProps> = ({ noteId, onClose }) => {
-  const router = useRouter(); // тут useRouter
+  const router = useRouter();
   const { data: note, isLoading, error } = useQuery<Note>({
     queryKey: ['note', noteId],
     queryFn: () => fetchNoteById(noteId),
@@ -33,7 +33,7 @@ const NoteDetailsClient: React.FC<NoteDetailsClientProps> = ({ noteId, onClose }
     if (onClose) {
       onClose();
     } else {
-      router.push('/notes/filter/All'); // дефолтна навігація
+      router.push('/notes/filter/All');
     }
   };
 

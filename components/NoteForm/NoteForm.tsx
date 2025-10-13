@@ -2,15 +2,31 @@
 
 import { FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { createNote } from '../../lib/api';
-import { useNoteStore } from '../../lib/store/noteStore';
-import { NOTE_TAGS, Note } from '../../types/note';
+import { useDraftStore } from '../../lib/store/noteStore';
+import { NOTE_TAGS } from '../../types/note';
 import css from './NoteForm.module.css';
 
 export default function NoteForm() {
   const router = useRouter();
-  const { draft, setDraft, clearDraft, addNote } = useNoteStore();
+  const queryClient = useQueryClient();
+  const { draft, setDraft, clearDraft } = useDraftStore();
+
+    const { mutateAsync: mutateCreateNote } = useMutation({
+    mutationFn: createNote,
+    onSuccess: async () => {
+    
+      await queryClient.invalidateQueries({ queryKey: ['notes'] });
+      clearDraft();
+      toast.success('Note created successfully!');
+      router.back();
+    },
+    onError: () => {
+      toast.error('Failed to create note');
+    },
+  });
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -21,19 +37,7 @@ export default function NoteForm() {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    try {
-      const newNote: Note = await createNote(draft);
-
-      // Додаємо одразу у Zustand
-      addNote(newNote);
-
-      // Очищуємо draft
-      clearDraft();
-      toast.success('Note created successfully!');
-      router.back();
-    } catch {
-      toast.error('Failed to create note');
-    }
+    await mutateCreateNote(draft);
   };
 
   const handleCancel = () => router.back();
@@ -42,12 +46,25 @@ export default function NoteForm() {
     <form className={css.form} onSubmit={handleSubmit}>
       <div className={css.formGroup}>
         <label htmlFor="title">Title</label>
-        <input id="title" name="title" value={draft.title} onChange={handleChange} required />
+        <input
+          id="title"
+          name="title"
+          value={draft.title}
+          onChange={handleChange}
+          required
+        />
       </div>
 
       <div className={css.formGroup}>
         <label htmlFor="content">Content</label>
-        <textarea id="content" name="content" value={draft.content} onChange={handleChange} rows={6} />
+        <textarea
+          id="content"
+          name="content"
+          value={draft.content}
+          onChange={handleChange}
+          rows={6}
+          required
+        />
       </div>
 
       <div className={css.formGroup}>
@@ -62,7 +79,11 @@ export default function NoteForm() {
       </div>
 
       <div className={css.actions}>
-        <button type="button" className={css.cancelButton} onClick={handleCancel}>
+        <button
+          type="button"
+          className={css.cancelButton}
+          onClick={handleCancel}
+        >
           Cancel
         </button>
         <button type="submit" className={css.submitButton}>

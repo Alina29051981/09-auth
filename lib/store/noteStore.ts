@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist, PersistStorage } from 'zustand/middleware';
-import { Note, NoteTag } from '../../types/note';
+import { NoteTag } from '../../types/note';
 
 export interface Draft {
   title: string;
@@ -8,12 +8,10 @@ export interface Draft {
   tag: NoteTag;
 }
 
-interface NoteStore {
+interface DraftStore {
   draft: Draft;
-  notes: Note[];
   setDraft: (note: Partial<Draft>) => void;
   clearDraft: () => void;
-  addNote: (note: Note) => void;
 }
 
 const initialDraft: Draft = {
@@ -22,13 +20,13 @@ const initialDraft: Draft = {
   tag: 'Todo',
 };
 
-// кастомний storage для persist
-const localStorageStorage: PersistStorage<NoteStore> = {
+const localStorageStorage: PersistStorage<Pick<DraftStore, 'draft'>> = {
   getItem: (name) => {
     const stored = localStorage.getItem(name);
     return stored ? JSON.parse(stored) : null;
   },
   setItem: (name, value) => {
+    
     localStorage.setItem(name, JSON.stringify(value));
   },
   removeItem: (name) => {
@@ -36,18 +34,17 @@ const localStorageStorage: PersistStorage<NoteStore> = {
   },
 };
 
-export const useNoteStore = create<NoteStore>()(
+export const useDraftStore = create<DraftStore>()(
   persist(
     (set) => ({
       draft: initialDraft,
-      notes: [],
       setDraft: (note) => set((state) => ({ draft: { ...state.draft, ...note } })),
       clearDraft: () => set({ draft: initialDraft }),
-      addNote: (note) => set((state) => ({ notes: [note, ...state.notes] })),
     }),
     {
       name: 'note-draft',
       storage: localStorageStorage,
+      partialize: (state) => ({ draft: state.draft }),
     }
   )
 );

@@ -22,8 +22,7 @@ export default function NotesClient({ filterTag }: NotesClientProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [debouncedSearch] = useDebounce(searchQuery, 500);
 
-  // Запит нотаток
-  const { data, isLoading, error } = useQuery<FetchNotesResponse, Error>({
+    const { data, isLoading, error } = useQuery<FetchNotesResponse, Error>({
     queryKey: ['notes', page, debouncedSearch, filterTag],
     queryFn: () =>
       fetchNotes({
@@ -36,8 +35,7 @@ export default function NotesClient({ filterTag }: NotesClientProps) {
     refetchOnWindowFocus: false,
   });
 
-  // Хендлери
-  const handleSearchChange = (value: string) => {
+    const handleSearchChange = (value: string) => {
     setPage(1);
     setSearchQuery(value);
   };
