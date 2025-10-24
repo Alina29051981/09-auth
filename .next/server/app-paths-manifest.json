@@ -1,11 +1,6 @@
 {
+  "/page": "app/page.js",
   "/api/auth/logout/route": "app/api/auth/logout/route.js",
-  "/api/auth/login/route": "app/api/auth/login/route.js",
-  "/(private routes)/profile/page": "app/(private routes)/profile/page.js",
-  "/api/users/me/route": "app/api/users/me/route.js",
-  "/(private routes)/profile/edit/page": "app/(private routes)/profile/edit/page.js",
-  "/api/auth/register/route": "app/api/auth/register/route.js",
-  "/(private routes)/notes/filter/[...slug]/page": "app/(private routes)/notes/filter/[...slug]/page.js",
-  "/(auth routes)/sign-in/page": "app/(auth routes)/sign-in/page.js",
-  "/(auth routes)/sign-up/page": "app/(auth routes)/sign-up/page.js"
+  "/api/auth/session/route": "app/api/auth/session/route.js",
+  "/(auth routes)/sign-in/page": "app/(auth routes)/sign-in/page.js"
 }

@@ -1,27 +1,10 @@
 {
   "pages": {
-    "/(private routes)/notes/filter/[...slug]/page": [
+    "/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/css/app/(private routes)/notes/filter/[...slug]/page.css",
-      "static/chunks/app/(private routes)/notes/filter/[...slug]/page.js"
-    ],
-    "/(private routes)/notes/filter/[...slug]/error": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/(private routes)/notes/filter/[...slug]/error.js"
-    ],
-    "/(private routes)/notes/filter/@sidebar/default": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/(private routes)/notes/filter/@sidebar/default.css",
-      "static/chunks/app/(private routes)/notes/filter/@sidebar/default.js"
-    ],
-    "/(private routes)/notes/filter/layout": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/(private routes)/notes/filter/layout.css",
-      "static/chunks/app/(private routes)/notes/filter/layout.js"
+      "static/css/app/page.css",
+      "static/chunks/app/page.js"
     ],
     "/@modal/default": [
       "static/chunks/webpack.js",
@@ -44,11 +27,6 @@
       "static/chunks/main-app.js",
       "static/chunks/app/not-found.js"
     ],
-    "/_not-found/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/_not-found/page.js"
-    ],
     "/(auth routes)/sign-in/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
@@ -59,24 +37,6 @@
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/(auth routes)/layout.js"
-    ],
-    "/(private routes)/profile/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/(private routes)/profile/page.css",
-      "static/chunks/app/(private routes)/profile/page.js"
-    ],
-    "/(private routes)/profile/edit/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/(private routes)/profile/edit/page.css",
-      "static/chunks/app/(private routes)/profile/edit/page.js"
-    ],
-    "/(auth routes)/sign-up/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/(auth routes)/sign-up/page.css",
-      "static/chunks/app/(auth routes)/sign-up/page.js"
     ]
   }
 }
