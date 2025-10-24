@@ -31,29 +31,6 @@
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/_not-found/page.js"
-    ],
-    "/(private routes)/notes/filter/[...slug]/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/(private routes)/notes/filter/[...slug]/page.css",
-      "static/chunks/app/(private routes)/notes/filter/[...slug]/page.js"
-    ],
-    "/(private routes)/notes/filter/[...slug]/error": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/(private routes)/notes/filter/[...slug]/error.js"
-    ],
-    "/(private routes)/notes/filter/@sidebar/default": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/(private routes)/notes/filter/@sidebar/default.css",
-      "static/chunks/app/(private routes)/notes/filter/@sidebar/default.js"
-    ],
-    "/(private routes)/notes/filter/layout": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/(private routes)/notes/filter/layout.css",
-      "static/chunks/app/(private routes)/notes/filter/layout.js"
     ]
   }
 }
