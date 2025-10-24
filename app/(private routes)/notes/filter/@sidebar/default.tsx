@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import styles from './SidebarNotes.module.css';
-import { type NoteTag } from '../../../../types/note';
+import { type NoteTag } from '../../../../../types/note';
 
 interface SidebarNotesProps {
   activeTag?: NoteTag | 'All';

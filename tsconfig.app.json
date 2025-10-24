@@ -25,7 +25,8 @@
     "global.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "types"
+    "types",
+    "next.config.mjs"
   ],
   "exclude": ["node_modules"]
 }

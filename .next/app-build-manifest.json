@@ -1,10 +1,27 @@
 {
   "pages": {
-    "/page": [
+    "/(private routes)/notes/filter/[...slug]/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/css/app/page.css",
-      "static/chunks/app/page.js"
+      "static/css/app/(private routes)/notes/filter/[...slug]/page.css",
+      "static/chunks/app/(private routes)/notes/filter/[...slug]/page.js"
+    ],
+    "/(private routes)/notes/filter/[...slug]/error": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(private routes)/notes/filter/[...slug]/error.js"
+    ],
+    "/(private routes)/notes/filter/@sidebar/default": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/(private routes)/notes/filter/@sidebar/default.css",
+      "static/chunks/app/(private routes)/notes/filter/@sidebar/default.js"
+    ],
+    "/(private routes)/notes/filter/layout": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/(private routes)/notes/filter/layout.css",
+      "static/chunks/app/(private routes)/notes/filter/layout.js"
     ],
     "/@modal/default": [
       "static/chunks/webpack.js",
@@ -27,40 +44,39 @@
       "static/chunks/main-app.js",
       "static/chunks/app/not-found.js"
     ],
-    "/notes/filter/[...slug]/page": [
+    "/_not-found/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/css/app/notes/filter/[...slug]/page.css",
-      "static/chunks/app/notes/filter/[...slug]/page.js"
+      "static/chunks/app/_not-found/page.js"
     ],
-    "/notes/filter/[...slug]/error": [
+    "/(auth routes)/sign-in/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/notes/filter/[...slug]/error.js"
+      "static/css/app/(auth routes)/sign-in/page.css",
+      "static/chunks/app/(auth routes)/sign-in/page.js"
     ],
-    "/notes/filter/@sidebar/default": [
+    "/(auth routes)/layout": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/css/app/notes/filter/@sidebar/default.css",
-      "static/chunks/app/notes/filter/@sidebar/default.js"
+      "static/chunks/app/(auth routes)/layout.js"
     ],
-    "/notes/filter/layout": [
+    "/(private routes)/profile/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/css/app/notes/filter/layout.css",
-      "static/chunks/app/notes/filter/layout.js"
+      "static/css/app/(private routes)/profile/page.css",
+      "static/chunks/app/(private routes)/profile/page.js"
     ],
-    "/notes/action/create/page": [
+    "/(private routes)/profile/edit/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/css/app/notes/action/create/page.css",
-      "static/chunks/app/notes/action/create/page.js"
+      "static/css/app/(private routes)/profile/edit/page.css",
+      "static/chunks/app/(private routes)/profile/edit/page.js"
     ],
-    "/@modal/(.)notes/[id]/page": [
+    "/(auth routes)/sign-up/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/css/app/@modal/(.)notes/[id]/page.css",
-      "static/chunks/app/@modal/(.)notes/[id]/page.js"
+      "static/css/app/(auth routes)/sign-up/page.css",
+      "static/chunks/app/(auth routes)/sign-up/page.js"
     ]
   }
 }

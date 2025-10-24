@@ -3,11 +3,11 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useDebounce } from 'use-debounce';
-import { fetchNotes, FetchNotesResponse } from '../../../../lib/api';
-import SearchBox from '../../../../components/SearchBox/SearchBox';
-import Pagination from '../../../../components/Pagination/Pagination';
-import NoteList from '../../../../components/NoteList/NoteList';
-import { NoteTag } from '../../../../types/note';
+import { fetchNotes, FetchNotesResponse } from '../../../../../lib/api';
+import SearchBox from '../../../../../components/SearchBox/SearchBox';
+import Pagination from '../../../../../components/Pagination/Pagination';
+import NoteList from '../../../../../components/NoteList/NoteList';
+import { NoteTag } from '../../../../../types/note';
 import Link from 'next/link';
 import css from './NotesPage.module.css';
 

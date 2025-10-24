@@ -1,5 +1,6 @@
-import TagsMenu from '../TagsMenu/TagsMenu';
 import Link from 'next/link';
+import TagsMenu from '../TagsMenu/TagsMenu';
+import AuthNavigation from '../AuthNavigation/AuthNavigation';
 import css from './Header.module.css';
 
 export default function Header() {
@@ -9,7 +10,8 @@ export default function Header() {
         NoteHub
       </Link>
       <nav className={css.navigation}>
-               <TagsMenu />
+        <TagsMenu />
+        <AuthNavigation />
       </nav>
     </header>
   );
