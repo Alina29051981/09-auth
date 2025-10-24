@@ -4,7 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "next dev",
+      "prebuild": "node scripts/prepare-vercel-config.js",
+      "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint ."
@@ -46,3 +47,4 @@
     "typescript": "~5.8.3"
   }
 }
+

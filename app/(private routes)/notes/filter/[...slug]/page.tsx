@@ -17,9 +17,9 @@ const [filter, readableFilter] = Array.isArray(params.slug) && params.slug.lengt
       title: `Notes - ${readableFilter}`,
       description: `Filtered notes by ${readableFilter}`,
       type: 'article',
-      url: `https://08-zustand-seven-iota.vercel.app/notes/filter/${filter}`,
+      url: `https://09-auth-rho-two.vercel.app/notes/filter/${filter}`,
       images: ['https://ac.goit.global/fullstack/react/notehub-og-meta.jpg'],
-      siteName: '08-zustand',
+      siteName: '09-auth',
     },
   };
 }
