@@ -6,7 +6,6 @@ type Props = {
   params: { id: string };
 };
 
-// Базовий URL твого API
 const API_BASE_URL = process.env.API_URL || 'https://example.com/api';
 
 export async function GET(_: Request, { params }: Props) {

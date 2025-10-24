@@ -6,21 +6,20 @@ import { useRouter } from 'next/navigation';
 import css from './SignUpPage.module.css';
 
 export default function SignUpPage() {
-  const [name, setName] = useState(''); // додали поле для імені
+  const [name, setName] = useState(''); 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const router = useRouter();
 
-  // типова гвардія для Axios помилок
-  const isAxiosError = (err: unknown): err is { response?: { data?: { message?: string } } } => {
+    const isAxiosError = (err: unknown): err is { response?: { data?: { message?: string } } } => {
     return typeof err === 'object' && err !== null && 'response' in err;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await register(email, password, name); 
+      await register(email, password); 
       router.push('/profile');
     } catch (err: unknown) {
       if (isAxiosError(err)) {

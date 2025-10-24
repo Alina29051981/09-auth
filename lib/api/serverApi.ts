@@ -8,7 +8,6 @@ interface ServerApiOptions {
   cookie?: string;
 }
 
-// Ноти
 export const fetchNotes = async (options?: ServerApiOptions): Promise<Note[]> => {
   const res = await axios.get<Note[]>(`${baseURL}/notes`, {
     headers: { Cookie: options?.cookie || '' },
@@ -25,7 +24,6 @@ export const fetchNoteById = async (id: string, options?: ServerApiOptions): Pro
   return res.data;
 };
 
-// Користувач
 export const getMe = async (options?: ServerApiOptions): Promise<User> => {
   const res = await axios.get<User>(`${baseURL}/users/me`, {
     headers: { Cookie: options?.cookie || '' },

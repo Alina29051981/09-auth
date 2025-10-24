@@ -13,13 +13,12 @@ export default function EditProfilePage() {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
-  // Завантажуємо користувача, якщо його ще немає
-  useEffect(() => {
+   useEffect(() => {
     const fetchUser = async () => {
       try {
         if (!user) {
           const me = await getMe();
-          setUsername(me.username ?? ''); // Гарантуємо, що name завжди string
+          setUsername(me.username ?? ''); 
           setUser(me);
         } else {
           setUsername(user.username ?? '');
@@ -32,7 +31,7 @@ export default function EditProfilePage() {
   }, [user, setUser]);
 
   const handleSave = async () => {
-    if (!username.trim()) return; // Не дозволяємо пустий username
+    if (!username.trim()) return;
     try {
       const updated = await updateMe(username);
       setUser(updated);

@@ -11,7 +11,7 @@ function isAxiosLikeError(error: unknown): error is { response?: { data?: unknow
 
 function buildCookieHeader() {
   const cookieStore = cookies();
-  // отримуємо всі cookie
+ 
   return cookieStore.getAll().map(c => `${c.name}=${c.value}`).join('; ');
 }
 

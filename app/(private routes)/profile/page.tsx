@@ -32,7 +32,7 @@ export default async function ProfilePage() {
 
   let user;
   try {
-    user = await getMe({ cookie: cookieHeader }); // передаємо cookie для SSR
+    user = await getMe({ cookie: cookieHeader }); 
   } catch {
     user = null;
   }

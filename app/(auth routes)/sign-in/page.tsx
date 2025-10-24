@@ -11,8 +11,7 @@ export default function SignInPage() {
   const [error, setError] = useState('');
   const router = useRouter();
 
-  // типова гвардія для Axios помилок
-  const isAxiosError = (err: unknown): err is { response?: { data?: { message?: string } } } => {
+    const isAxiosError = (err: unknown): err is { response?: { data?: { message?: string } } } => {
     return typeof err === 'object' && err !== null && 'response' in err;
   };
 
