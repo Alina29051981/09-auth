@@ -1,50 +1,35 @@
 {
   "name": "09-auth",
+  "version": "0.1.0",
   "private": true,
-  "version": "0.0.0",
-  "type": "module",
   "scripts": {
-      "prebuild": "next.config.mjs",
-      "dev": "next dev",
-    "build": "next build",
+    "dev": "next dev",
+    "build": "next build --turbopack",
     "start": "next start",
-    "lint": "eslint ."
+    "lint": "eslint"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.90.2",
+    "@tanstack/react-query-devtools": "^5.90.2",
     "axios": "^1.12.2",
     "cookie": "^1.0.2",
     "formik": "^2.4.6",
-    "izitoast": "^1.4.0",
-    "modern-normalize": "^3.0.1",
-    "next": "14.2.13",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
+    "next": "^15.5.4",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
     "react-hot-toast": "^2.6.0",
     "react-paginate": "^8.3.0",
-    "react-window": "^2.1.1",
     "use-debounce": "^10.0.6",
-    "yup": "^1.7.0",
+    "yup": "^1.7.1",
     "zustand": "^5.0.8"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3.3.1",
-    "@eslint/js": "^9.33.0",
-    "@types/axios": "^0.9.36",
-    "@types/node": "24.5.2",
-    "@types/react": "^19.1.15",
-    "@types/react-dom": "^19.1.7",
-    "@typescript-eslint/eslint-plugin": "^8.45.0",
-    "@typescript-eslint/parser": "^8.45.0",
-    "eslint": "^9.33.0",
+    "@eslint/eslintrc": "^3",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
     "eslint-config-next": "^15.5.4",
-    "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-prettier": "^5.5.4",
-    "eslint-plugin-react-hooks": "^5.2.0",
-    "eslint-plugin-react-refresh": "^0.4.23",
-    "globals": "^16.4.0",
-    "prettier": "^3.6.2",
-    "typescript": "~5.8.3"
+    "typescript": "^5"
   }
 }
-

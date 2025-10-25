@@ -1,45 +1,59 @@
-import axios from 'axios';
-import { User } from '../../types/user';
-import { Note } from '../../types/note';
+import { cookies } from "next/headers";
+import {api} from "./api";
+import { Note } from "../../types/note";
+import { User } from "../../types/user";
+import { NoteHttpResponse } from "./clientApi";
 
-const baseURL = process.env.NEXT_PUBLIC_API_URL + '/api';
+export default async function fetchNotes(
+  query: string,
+  page: number,
+  tag?: string,
+): Promise<NoteHttpResponse> {
+  const cookieStore = await cookies();
 
-interface ServerApiOptions {
-  cookie?: string;
+  const response = await api.get<NoteHttpResponse>("/notes", {
+    params: {
+      search: query,
+      page,
+      tag: tag || undefined,
+      perPage: 12,
+    },
+    headers: {
+      Cookie: cookieStore.toString(),
+    },
+  });
+
+  return response.data;
 }
 
-export const fetchNotes = async (options?: ServerApiOptions): Promise<Note[]> => {
-  const res = await axios.get<Note[]>(`${baseURL}/notes`, {
-    headers: { Cookie: options?.cookie || '' },
-    withCredentials: true,
+export async function fetchNoteById(id: string): Promise<Note> {
+  const cookieStore = await cookies();
+
+  const responseById = await api.get<Note>(`/notes/${id}`, {
+    headers: {
+      Cookie: cookieStore.toString(),
+    },
   });
-  return res.data;
+  return responseById.data;
+}
+
+export const getMe = async () => {
+  const cookieStore = await cookies();
+  const { data } = await api.get<User>("/users/me", {
+    headers: {
+      Cookie: cookieStore.toString(),
+    },
+  });
+  return data;
 };
 
-export const fetchNoteById = async (id: string, options?: ServerApiOptions): Promise<Note> => {
-  const res = await axios.get<Note>(`${baseURL}/notes/${id}`, {
-    headers: { Cookie: options?.cookie || '' },
-    withCredentials: true,
+export const checkSession = async () => {
+  const cookieStore = await cookies();
+  const res = await api.get("/auth/session", {
+    headers: {
+      Cookie: cookieStore.toString(),
+    },
   });
-  return res.data;
-};
 
-export const getMe = async (options?: ServerApiOptions): Promise<User> => {
-  const res = await axios.get<User>(`${baseURL}/users/me`, {
-    headers: { Cookie: options?.cookie || '' },
-    withCredentials: true,
-  });
-  return res.data;
-};
-
-export const checkSession = async (options?: ServerApiOptions): Promise<User | null> => {
-  try {
-    const res = await axios.get<User>(`${baseURL}/auth/session`, {
-      headers: { Cookie: options?.cookie || '' },
-      withCredentials: true,
-    });
-    return res.data;
-  } catch {
-    return null;
-  }
+  return res;
 };

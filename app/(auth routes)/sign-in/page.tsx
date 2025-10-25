@@ -16,20 +16,20 @@ export default function SignInPage() {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      await login(email, password);
-      router.push('/profile');
-    } catch (err: unknown) {
-      if (isAxiosError(err)) {
-        setError(err.response?.data?.message || 'Request failed');
-      } else if (err instanceof Error) {
-        setError(err.message);
-      } else {
-        setError('Something went wrong');
-      }
+  e.preventDefault();
+  try {
+        await login({ email, password });
+    router.push("/profile");
+  } catch (err: unknown) {
+    if (isAxiosError(err)) {
+      setError(err.response?.data?.message || "Request failed");
+    } else if (err instanceof Error) {
+      setError(err.message);
+    } else {
+      setError("Something went wrong");
     }
-  };
+  }
+};
 
   return (
     <main className={css.mainContent}>

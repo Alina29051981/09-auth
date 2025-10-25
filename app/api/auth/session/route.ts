@@ -1,16 +1,9 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
-import { api } from "../../../../lib/api/api";
+import { api } from "../../api";
 import { parse } from "cookie";
+import { isAxiosError } from "axios";
 import { logErrorResponse } from "../../_utils/utils";
-
-interface AxiosLikeError {
-  response?: { data?: unknown };
-}
-
-function isAxiosLikeError(error: unknown): error is AxiosLikeError {
-  return typeof error === "object" && error !== null && "response" in error;
-}
 
 export async function GET() {
   try {
@@ -50,17 +43,13 @@ export async function GET() {
         return NextResponse.json({ success: true }, { status: 200 });
       }
     }
-
     return NextResponse.json({ success: false }, { status: 200 });
-  } catch (error: unknown) {
-    if (isAxiosLikeError(error)) {
+  } catch (error) {
+    if (isAxiosError(error)) {
       logErrorResponse(error.response?.data);
-    } else if (error instanceof Error) {
-      logErrorResponse({ message: error.message });
-    } else {
-      logErrorResponse({ message: "Unknown error" });
+      return NextResponse.json({ success: false }, { status: 200 });
     }
-
+    logErrorResponse({ message: (error as Error).message });
     return NextResponse.json({ success: false }, { status: 200 });
   }
 }

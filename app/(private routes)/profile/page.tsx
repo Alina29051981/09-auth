@@ -1,38 +1,20 @@
-import { cookies } from 'next/headers';
 import { getMe } from '../../../lib/api/serverApi';
-import css from './ProfilePage.module.css';
 import Image from 'next/image';
 import Link from 'next/link';
 import type { Metadata } from 'next';
+import css from './ProfilePage.module.css';
 
 export const metadata: Metadata = {
   title: 'Profile | NoteHub',
   description: 'User profile page of NoteHub application. View and manage your account details.',
   keywords: ['NoteHub', 'profile', 'user', 'account'],
   robots: { index: false, follow: false },
-  openGraph: {
-    title: 'Profile | NoteHub',
-    description: 'Manage your NoteHub user profile',
-    url: '/profile',
-    siteName: 'NoteHub',
-    images: [
-      {
-        url: 'https://ac.goit.global/fullstack/react/notehub-og-meta.jpg',
-        width: 1200,
-        height: 630,
-        alt: 'NoteHub Profile',
-      },
-    ],
-  },
 };
 
 export default async function ProfilePage() {
-  const cookieStore = cookies();
-  const cookieHeader = cookieStore.toString();
-
-  let user;
+  let user = null;
   try {
-    user = await getMe({ cookie: cookieHeader }); 
+    user = await getMe(); 
   } catch {
     user = null;
   }
@@ -71,11 +53,10 @@ export default async function ProfilePage() {
           />
         </div>
 
-       <div className={css.profileInfo}>
-  <p>Username: {user.username}</p>
-  <p>Email: {user.email}</p>
-</div>
-
+        <div className={css.profileInfo}>
+          <p>Username: {user.username}</p>
+          <p>Email: {user.email}</p>
+        </div>
       </div>
     </main>
   );

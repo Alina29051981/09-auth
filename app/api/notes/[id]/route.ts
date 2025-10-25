@@ -1,72 +1,77 @@
-import { NextResponse } from 'next/server';
-import { cookies } from 'next/headers';
-import { logErrorResponse } from '../../_utils/utils';
+import { NextResponse } from "next/server";
+import { api } from "../../api";
+import { cookies } from "next/headers";
+import { logErrorResponse } from "../../_utils/utils";
+import { isAxiosError } from "axios";
 
 type Props = {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 };
 
-const API_BASE_URL = process.env.API_URL || 'https://example.com/api';
-
-export async function GET(_: Request, { params }: Props) {
+export async function GET(
+  _request: Request,
+  { params }: Props
+) {
   try {
-    const cookieStore = cookies();
-    const { id } = params;
-
-    const res = await fetch(`${API_BASE_URL}/notes/${id}`, {
-      method: 'GET',
-      headers: {
-        Cookie: cookieStore.toString(),
-      },
+    const cookieStore = await cookies(); 
+    const { id } = await params;         
+    const res = await api(`/notes/${id}`, {
+      headers: { Cookie: cookieStore.toString() },
     });
-
-    const data = await res.json();
-    return NextResponse.json(data, { status: res.status });
+    return NextResponse.json(res.data, { status: res.status });
   } catch (error) {
+    if (isAxiosError(error)) {
+      logErrorResponse(error.response?.data);
+      return NextResponse.json(
+        { error: error.message, response: error.response?.data },
+        { status: error.status || 500 }
+      );
+    }
     logErrorResponse({ message: (error as Error).message });
-    return NextResponse.json({ error: (error as Error).message }, { status: 500 });
+    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
 
-export async function DELETE(_: Request, { params }: Props) {
+// Те ж саме для DELETE і PATCH:
+export async function DELETE(_request: Request, { params }: Props) {
   try {
-    const cookieStore = cookies();
-    const { id } = params;
-
-    const res = await fetch(`${API_BASE_URL}/notes/${id}`, {
-      method: 'DELETE',
-      headers: {
-        Cookie: cookieStore.toString(),
-      },
+    const cookieStore = await cookies();
+    const { id } = await params;
+    const res = await api.delete(`/notes/${id}`, {
+      headers: { Cookie: cookieStore.toString() },
     });
-
-    const data = await res.json();
-    return NextResponse.json(data, { status: res.status });
+    return NextResponse.json(res.data, { status: res.status });
   } catch (error) {
+    if (isAxiosError(error)) {
+      logErrorResponse(error.response?.data);
+      return NextResponse.json(
+        { error: error.message, response: error.response?.data },
+        { status: error.status || 500 }
+      );
+    }
     logErrorResponse({ message: (error as Error).message });
-    return NextResponse.json({ error: (error as Error).message }, { status: 500 });
+    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
 
 export async function PATCH(request: Request, { params }: Props) {
   try {
-    const cookieStore = cookies();
-    const { id } = params;
+    const cookieStore = await cookies();
+    const { id } = await params;
     const body = await request.json();
-
-    const res = await fetch(`${API_BASE_URL}/notes/${id}`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-        Cookie: cookieStore.toString(),
-      },
-      body: JSON.stringify(body),
+    const res = await api.patch(`/notes/${id}`, body, {
+      headers: { Cookie: cookieStore.toString() },
     });
-
-    const data = await res.json();
-    return NextResponse.json(data, { status: res.status });
+    return NextResponse.json(res.data, { status: res.status });
   } catch (error) {
+    if (isAxiosError(error)) {
+      logErrorResponse(error.response?.data);
+      return NextResponse.json(
+        { error: error.message, response: error.response?.data },
+        { status: error.status || 500 }
+      );
+    }
     logErrorResponse({ message: (error as Error).message });
-    return NextResponse.json({ error: (error as Error).message }, { status: 500 });
+    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }

@@ -1,4 +1,4 @@
-import { fetchNoteById } from '../../../../lib/api';
+import { fetchNoteById } from '../../../../lib/api/serverApi';
 import NotePreviewClient from './NotePreview.client';
 import { dehydrate, QueryClient, HydrationBoundary } from '@tanstack/react-query';
 import styles from './NotePreview.module.css';

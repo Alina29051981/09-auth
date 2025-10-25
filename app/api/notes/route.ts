@@ -1,66 +1,72 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { api } from '../api';
-import { cookies } from 'next/headers';
-import { logErrorResponse } from '../_utils/utils';
+import { NextRequest, NextResponse } from "next/server";
+import { api } from "../api";
+import { cookies } from "next/headers";
+import { isAxiosError } from "axios";
+import { logErrorResponse } from "../_utils/utils";
 
-export async function POST(request: NextRequest) {
+export async function GET(request: NextRequest) {
   try {
-    const cookieStore = cookies();
-    const body = await request.json();
+    const cookieStore = await cookies();
+    const search = request.nextUrl.searchParams.get("search") ?? "";
+    const page = Number(request.nextUrl.searchParams.get("page") ?? 1);
+    const rawTag = request.nextUrl.searchParams.get("tag") ?? "";
+    const tag = rawTag === "All" ? "" : rawTag;
 
-    const res = await api.post('/notes', body, {
+    const res = await api("/notes", {
+      params: {
+        ...(search !== "" && { search }),
+        page,
+        perPage: 12,
+        ...(tag && { tag }),
+      },
       headers: {
         Cookie: cookieStore.toString(),
-        'Content-Type': 'application/json',
       },
     });
 
     return NextResponse.json(res.data, { status: res.status });
-  } catch (error: unknown) {
-    const message = error instanceof Error ? error.message : String(error);
-    const response = (error as { response?: { data?: unknown; status?: number } })?.response?.data;
-    const status = (error as { response?: { status?: number } })?.response?.status ?? 500;
-
-    logErrorResponse({ message, response });
-    return NextResponse.json({ error: message, response }, { status });
+  } catch (error) {
+    if (isAxiosError(error)) {
+      logErrorResponse(error.response?.data);
+      return NextResponse.json(
+        { error: error.message, response: error.response?.data },
+        { status: error.status },
+      );
+    }
+    logErrorResponse({ message: (error as Error).message });
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 },
+    );
   }
 }
 
-export async function PATCH(request: NextRequest) {
+export async function POST(request: NextRequest) {
   try {
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
+
     const body = await request.json();
 
-    const res = await api.patch('/notes', body, {
-      headers: { Cookie: cookieStore.toString() },
+    const res = await api.post("/notes", body, {
+      headers: {
+        Cookie: cookieStore.toString(),
+        "Content-Type": "application/json",
+      },
     });
 
     return NextResponse.json(res.data, { status: res.status });
-  } catch (error: unknown) {
-    const message = error instanceof Error ? error.message : String(error);
-    const response = (error as { response?: { data?: unknown; status?: number } })?.response?.data;
-    const status = (error as { response?: { status?: number } })?.response?.status ?? 500;
-
-    logErrorResponse({ message, response });
-    return NextResponse.json({ error: message, response }, { status });
-  }
-}
-
-export async function DELETE() {
-  try {
-    const cookieStore = cookies();
-
-    const res = await api.delete('/notes', {
-      headers: { Cookie: cookieStore.toString() },
-    });
-
-    return NextResponse.json(res.data, { status: res.status });
-  } catch (error: unknown) {
-    const message = error instanceof Error ? error.message : String(error);
-    const response = (error as { response?: { data?: unknown; status?: number } })?.response?.data;
-    const status = (error as { response?: { status?: number } })?.response?.status ?? 500;
-
-    logErrorResponse({ message, response });
-    return NextResponse.json({ error: message, response }, { status });
+  } catch (error) {
+    if (isAxiosError(error)) {
+      logErrorResponse(error.response?.data);
+      return NextResponse.json(
+        { error: error.message, response: error.response?.data },
+        { status: error.status },
+      );
+    }
+    logErrorResponse({ message: (error as Error).message });
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 },
+    );
   }
 }

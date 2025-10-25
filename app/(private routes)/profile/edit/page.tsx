@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useAuthStore } from '../../../../lib/store/authStore';
-import { getMe, updateMe } from '../../../../lib/api/clientApi';
+import { getMe, getMeUpdate } from '../../../../lib/api/clientApi';
 import { useRouter } from 'next/navigation';
 import css from './EditProfilePage.module.css';
 import Image from 'next/image'
@@ -33,7 +33,7 @@ export default function EditProfilePage() {
   const handleSave = async () => {
     if (!username.trim()) return;
     try {
-      const updated = await updateMe(username);
+      const updated = await getMeUpdate({ username });
       setUser(updated);
       router.push('/profile');
        router.refresh();
