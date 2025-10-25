@@ -15,10 +15,9 @@ export default function AuthNavigation() {
     clearIsAuthenticated();
     router.push('/sign-in');
   };
-
-  if (isAuthenticated) {
-    return (
-      <ul className={css.navList}>
+  
+    return isAuthenticated?(
+      <>
         <li className={css.navigationItem}>
           <Link href="/profile" prefetch={false} className={css.navigationLink}>
             Profile
@@ -30,12 +29,9 @@ export default function AuthNavigation() {
             Logout
           </button>
         </li>
-      </ul>
-    );
-  }
-
-  return (
-    <ul className={css.navList}>
+      </>
+    ): (
+    <>
       <li className={css.navigationItem}>
         <Link href="/sign-in" prefetch={false} className={css.navigationLink}>
           Login
@@ -46,6 +42,6 @@ export default function AuthNavigation() {
           Sign up
         </Link>
       </li>
-    </ul>
+    </>
   );
 }

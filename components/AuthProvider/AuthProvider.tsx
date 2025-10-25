@@ -1,8 +1,7 @@
 'use client';
-
 import { useEffect, useState, ReactNode } from 'react';
 import { useAuthStore } from '../../lib/store/authStore';
-import { checkSession } from '../../lib/api/clientApi';
+import { checkSession, getMe } from '../../lib/api/clientApi';
 import Loader from '../../app/loading';
 
 interface AuthProviderProps {
@@ -16,9 +15,11 @@ export default function AuthProvider({ children }: AuthProviderProps) {
   useEffect(() => {
     const verify = async () => {
       try {
-        const user = await checkSession();
+        await checkSession();
+        const user = await getMe();
         if (user) setUser(user);
-        else clearIsAuthenticated();
+      } catch {
+        clearIsAuthenticated();
       } finally {
         setLoading(false);
       }
