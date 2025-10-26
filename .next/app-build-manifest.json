@@ -16,16 +16,11 @@
       "static/chunks/main-app.js",
       "static/chunks/app/not-found.js"
     ],
-    "/(auth routes)/layout": [
+    "/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/(auth routes)/layout.js"
-    ],
-    "/(auth routes)/sign-up/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/(auth routes)/sign-up/page.css",
-      "static/chunks/app/(auth routes)/sign-up/page.js"
+      "static/css/app/page.css",
+      "static/chunks/app/page.js"
     ],
     "/@modal/default": [
       "static/chunks/webpack.js",
@@ -41,23 +36,6 @@
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/api/users/me/route.js"
-    ],
-    "/(auth routes)/sign-in/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/(auth routes)/sign-in/page.css",
-      "static/chunks/app/(auth routes)/sign-in/page.js"
-    ],
-    "/api/auth/login/route": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/api/auth/login/route.js"
-    ],
-    "/(private routes)/profile/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/(private routes)/profile/page.css",
-      "static/chunks/app/(private routes)/profile/page.js"
     ],
     "/(private routes)/notes/filter/layout": [
       "static/chunks/webpack.js",
@@ -87,22 +65,27 @@
       "static/chunks/main-app.js",
       "static/chunks/app/api/notes/route.js"
     ],
-    "/page": [
+    "/(private routes)/profile/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/css/app/page.css",
-      "static/chunks/app/page.js"
-    ],
-    "/(private routes)/profile/edit/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/(private routes)/profile/edit/page.css",
-      "static/chunks/app/(private routes)/profile/edit/page.js"
+      "static/css/app/(private routes)/profile/page.css",
+      "static/chunks/app/(private routes)/profile/page.js"
     ],
     "/api/auth/logout/route": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/api/auth/logout/route.js"
+    ],
+    "/(auth routes)/layout": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(auth routes)/layout.js"
+    ],
+    "/(auth routes)/sign-in/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/(auth routes)/sign-in/page.css",
+      "static/chunks/app/(auth routes)/sign-in/page.js"
     ]
   }
 }

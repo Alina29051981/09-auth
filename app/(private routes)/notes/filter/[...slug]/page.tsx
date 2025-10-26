@@ -5,10 +5,17 @@ import { NoteTag } from '../../../../../types/note';
 import { type Metadata } from 'next';
 import { dehydrate, QueryClient, HydrationBoundary } from '@tanstack/react-query';
 
-export async function generateMetadata({ params }: { params: { slug: string[] } }): Promise<Metadata> {
-  const [filter, readableFilter] = Array.isArray(params.slug) && params.slug.length > 0
-    ? [params.slug.join('/'), params.slug.join(' ')]
-    : ['All', 'All'];
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string[] }>;
+}): Promise<Metadata> {
+  const { slug } = await params; 
+
+  const [filter, readableFilter] =
+    Array.isArray(slug) && slug.length > 0
+      ? [slug.join('/'), slug.join(' ')]
+      : ['All', 'All'];
 
   return {
     title: `Notes - ${readableFilter}`,
@@ -25,13 +32,17 @@ export async function generateMetadata({ params }: { params: { slug: string[] } 
 }
 
 interface NotesFilterPageProps {
-  params: { slug: string[] };
-  searchParams?: { page?: string; search?: string };
+  params: Promise<{ slug: string[] }>;
+  searchParams?: Promise<{ page?: string; search?: string }>;
 }
 
-export default async function NotesFilterPage({ params, searchParams }: NotesFilterPageProps) {
-  const slug = params.slug;
-  const sp = searchParams;
+export default async function NotesFilterPage({
+  params,
+  searchParams,
+}: NotesFilterPageProps) {
+  
+  const { slug } = await params;
+  const sp = searchParams ? await searchParams : {};
 
   const tag = slug?.[0] ?? 'All';
 
@@ -40,7 +51,6 @@ export default async function NotesFilterPage({ params, searchParams }: NotesFil
   }
 
   const filterTag: 'All' | NoteTag = isValidTag(tag) ? tag : 'All';
-
   const page = Number(sp?.page ?? 1);
   const perPage = 10;
   const search = sp?.search ?? '';
@@ -49,11 +59,7 @@ export default async function NotesFilterPage({ params, searchParams }: NotesFil
   await queryClient.prefetchQuery({
     queryKey: ['notes', { tag: filterTag, page, perPage, search }],
     queryFn: () =>
-      fetchNotes(
-        search,
-        page,
-        filterTag === 'All' ? undefined : filterTag
-      ),
+      fetchNotes(search, page, filterTag === 'All' ? undefined : filterTag),
   });
 
   const dehydratedState = dehydrate(queryClient);

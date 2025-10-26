@@ -2,10 +2,10 @@
 
 import { useState, useEffect } from 'react';
 import { useAuthStore } from '../../../../lib/store/authStore';
-import { getMe, getMeUpdate } from '../../../../lib/api/clientApi';
+import { getMe, updateMe } from '../../../../lib/api/clientApi';
 import { useRouter } from 'next/navigation';
 import css from './EditProfilePage.module.css';
-import Image from 'next/image'
+import Image from 'next/image';
 
 export default function EditProfilePage() {
   const { user, setUser } = useAuthStore();
@@ -13,12 +13,12 @@ export default function EditProfilePage() {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
-   useEffect(() => {
+  useEffect(() => {
     const fetchUser = async () => {
       try {
         if (!user) {
           const me = await getMe();
-          setUsername(me.username ?? ''); 
+          setUsername(me.username ?? '');
           setUser(me);
         } else {
           setUsername(user.username ?? '');
@@ -30,13 +30,15 @@ export default function EditProfilePage() {
     fetchUser();
   }, [user, setUser]);
 
-  const handleSave = async () => {
+  const handleSave = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     if (!username.trim()) return;
+
     try {
-      const updated = await getMeUpdate({ username });
+      const updated = await updateMe({ username });
       setUser(updated);
       router.push('/profile');
-       router.refresh();
+      router.refresh();
     } catch (err) {
       console.error('Failed to update profile', err);
       alert('Failed to update profile');
@@ -44,7 +46,7 @@ export default function EditProfilePage() {
   };
 
   const handleCancel = () => {
-    router.push('/profile');
+    router.back();
   };
 
   if (loading) {
@@ -65,7 +67,7 @@ export default function EditProfilePage() {
           />
         )}
 
-        <form className={css.profileInfo} onSubmit={e => e.preventDefault()}>
+        <form className={css.profileInfo} onSubmit={handleSave}>
           <div className={css.usernameWrapper}>
             <label htmlFor="username">Username:</label>
             <input
@@ -73,17 +75,24 @@ export default function EditProfilePage() {
               type="text"
               className={css.input}
               value={username}
-              onChange={e => setUsername(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setUsername(e.target.value)
+              }
+              required
             />
           </div>
 
           <p>Email: {user?.email}</p>
 
           <div className={css.actions}>
-            <button type="button" className={css.saveButton} onClick={handleSave}>
+            <button type="submit" className={css.saveButton}>
               Save
             </button>
-            <button type="button" className={css.cancelButton} onClick={handleCancel}>
+            <button
+              type="button"
+              className={css.cancelButton}
+              onClick={handleCancel}
+            >
               Cancel
             </button>
           </div>

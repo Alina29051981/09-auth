@@ -1,25 +1,29 @@
 'use client';
 
 import { useState } from 'react';
-import { register } from '../../../lib/api/clientApi';
 import { useRouter } from 'next/navigation';
+import { register } from '../../../lib/api/clientApi';
+import { useAuthStore } from '../../../lib/store/authStore';
 import css from './SignUpPage.module.css';
 
 export default function SignUpPage() {
-  const [name, setName] = useState(''); 
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const router = useRouter();
+  const setUser = useAuthStore((state) => state.setUser);
 
-    const isAxiosError = (err: unknown): err is { response?: { data?: { message?: string } } } => {
-    return typeof err === 'object' && err !== null && 'response' in err;
-  };
+  const isAxiosError = (
+    err: unknown
+  ): err is { response?: { data?: { message?: string } } } =>
+    typeof err === 'object' && err !== null && 'response' in err;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-     await register({ email, password });
+      const user = await register({ name, email, password });
+      setUser(user); 
       router.push('/profile');
     } catch (err: unknown) {
       if (isAxiosError(err)) {
@@ -40,9 +44,10 @@ export default function SignUpPage() {
           <label htmlFor="name">Name</label>
           <input
             id="name"
+            name="name"
             type="text"
             value={name}
-            onChange={e => setName(e.target.value)}
+            onChange={(e) => setName(e.target.value)}
             className={css.input}
             required
           />
@@ -52,9 +57,10 @@ export default function SignUpPage() {
           <label htmlFor="email">Email</label>
           <input
             id="email"
+            name="email"
             type="email"
             value={email}
-            onChange={e => setEmail(e.target.value)}
+            onChange={(e) => setEmail(e.target.value)}
             className={css.input}
             required
           />
@@ -64,16 +70,19 @@ export default function SignUpPage() {
           <label htmlFor="password">Password</label>
           <input
             id="password"
+            name="password"
             type="password"
             value={password}
-            onChange={e => setPassword(e.target.value)}
+            onChange={(e) => setPassword(e.target.value)}
             className={css.input}
             required
           />
         </div>
 
         <div className={css.actions}>
-          <button type="submit" className={css.submitButton}>Register</button>
+          <button type="submit" className={css.submitButton}>
+            Register
+          </button>
         </div>
 
         {error && <p className={css.error}>{error}</p>}

@@ -10,7 +10,7 @@ interface NoteDetailsClientProps {
   onClose?: () => void;
 }
 
-interface Note {
+export interface Note {
   id: string;
   title: string;
   content: string;
@@ -20,14 +20,14 @@ interface Note {
 
 const NoteDetailsClient: React.FC<NoteDetailsClientProps> = ({ noteId, onClose }) => {
   const router = useRouter();
-  const { data: note, isLoading, error } = useQuery<Note>({
+
+    const { data: note, isLoading, error } = useQuery<Note>({
     queryKey: ['note', noteId],
     queryFn: () => fetchNoteById(noteId),
-    refetchOnMount: false,
-  });
 
-  if (isLoading) return <p>Loading...</p>;
-  if (error || !note) return <p>Something went wrong.</p>;
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+  });
 
   const handleClose = () => {
     if (onClose) {
@@ -36,6 +36,9 @@ const NoteDetailsClient: React.FC<NoteDetailsClientProps> = ({ noteId, onClose }
       router.push('/notes/filter/All');
     }
   };
+
+  if (isLoading) return <p>Loading...</p>;
+  if (error || !note) return <p>Something went wrong.</p>;
 
   return (
     <div className={css.container} style={{ position: 'relative' }}>

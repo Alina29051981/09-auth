@@ -8,13 +8,10 @@ type Props = {
   params: Promise<{ id: string }>;
 };
 
-export async function GET(
-  _request: Request,
-  { params }: Props
-) {
+export async function GET(_request: Request, { params }: Props) {
   try {
-    const cookieStore = await cookies(); 
-    const { id } = await params;         
+    const cookieStore = await cookies();
+    const { id } = await params;
     const res = await api(`/notes/${id}`, {
       headers: { Cookie: cookieStore.toString() },
     });
@@ -24,7 +21,7 @@ export async function GET(
       logErrorResponse(error.response?.data);
       return NextResponse.json(
         { error: error.message, response: error.response?.data },
-        { status: error.status || 500 }
+        { status: error.response?.status }
       );
     }
     logErrorResponse({ message: (error as Error).message });
@@ -32,7 +29,6 @@ export async function GET(
   }
 }
 
-// Те ж саме для DELETE і PATCH:
 export async function DELETE(_request: Request, { params }: Props) {
   try {
     const cookieStore = await cookies();
@@ -46,7 +42,7 @@ export async function DELETE(_request: Request, { params }: Props) {
       logErrorResponse(error.response?.data);
       return NextResponse.json(
         { error: error.message, response: error.response?.data },
-        { status: error.status || 500 }
+        { status: error.response?.status }
       );
     }
     logErrorResponse({ message: (error as Error).message });
@@ -68,7 +64,7 @@ export async function PATCH(request: Request, { params }: Props) {
       logErrorResponse(error.response?.data);
       return NextResponse.json(
         { error: error.message, response: error.response?.data },
-        { status: error.status || 500 }
+        { status: error.response?.status }
       );
     }
     logErrorResponse({ message: (error as Error).message });

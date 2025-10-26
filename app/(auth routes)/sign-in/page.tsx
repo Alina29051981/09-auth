@@ -1,35 +1,36 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { login } from '../../../lib/api/clientApi';
-import { useRouter } from 'next/navigation';
-import css from './SignInPage.module.css';
+import { useState } from "react";
+import { login } from "../../../lib/api/clientApi";
+import { useRouter } from "next/navigation";
+import css from "./SignInPage.module.css";
 
 export default function SignInPage() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const router = useRouter();
 
-    const isAxiosError = (err: unknown): err is { response?: { data?: { message?: string } } } => {
-    return typeof err === 'object' && err !== null && 'response' in err;
-  };
+  const isAxiosError = (
+    err: unknown
+  ): err is { response?: { data?: { message?: string } } } =>
+    typeof err === "object" && err !== null && "response" in err;
 
   const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
-  try {
-        await login({ email, password });
-    router.push("/profile");
-  } catch (err: unknown) {
-    if (isAxiosError(err)) {
-      setError(err.response?.data?.message || "Request failed");
-    } else if (err instanceof Error) {
-      setError(err.message);
-    } else {
-      setError("Something went wrong");
+    e.preventDefault();
+    try {
+      await login({ email, password }); 
+      router.push("/profile");
+    } catch (err: unknown) {
+      if (isAxiosError(err)) {
+        setError(err.response?.data?.message || "Request failed");
+      } else if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("Something went wrong");
+      }
     }
-  }
-};
+  };
 
   return (
     <main className={css.mainContent}>
@@ -40,9 +41,10 @@ export default function SignInPage() {
           <label htmlFor="email">Email</label>
           <input
             id="email"
+            name="email" 
             type="email"
             value={email}
-            onChange={e => setEmail(e.target.value)}
+            onChange={(e) => setEmail(e.target.value)}
             className={css.input}
             required
           />
@@ -52,9 +54,10 @@ export default function SignInPage() {
           <label htmlFor="password">Password</label>
           <input
             id="password"
+            name="password" 
             type="password"
             value={password}
-            onChange={e => setPassword(e.target.value)}
+            onChange={(e) => setPassword(e.target.value)}
             className={css.input}
             required
           />

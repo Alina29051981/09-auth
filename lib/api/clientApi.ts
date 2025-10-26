@@ -12,13 +12,14 @@ export default async function fetchNotes(
   query: string,
   page: number,
   tag?: string,
+  perPage: number = 12 
 ): Promise<NoteHttpResponse> {
   const response = await api.get<NoteHttpResponse>("/notes", {
     params: {
       search: query,
       page,
       tag: tag || undefined,
-      perPage: 12,
+      perPage,
     },
   });
 
@@ -50,6 +51,12 @@ export async function deleteNote(id: string): Promise<Note> {
 }
 
 export interface RegisterRequest {
+  name: string;
+  email: string;
+  password: string;
+}
+
+export interface LoginRequest {
   email: string;
   password: string;
 }
@@ -64,7 +71,7 @@ export async function register(data: RegisterRequest) {
   return res.data;
 }
 
-export async function login(data: RegisterRequest) {
+export async function login(data: LoginRequest) {
   const res = await api.post<User>("/auth/login", data);
   return res.data;
 }
@@ -91,7 +98,7 @@ export interface UpdateUserRequest {
   username: string;
 }
 
-export const getMeUpdate = async (payload: UpdateUserRequest) => {
+export const updateMe = async (payload: UpdateUserRequest) => {
   const res = await api.patch<User>("/users/me", payload);
   return res.data;
 };
