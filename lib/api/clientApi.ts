@@ -51,8 +51,7 @@ export async function deleteNote(id: string): Promise<Note> {
 }
 
 export interface RegisterRequest {
-  name: string;
-  email: string;
+   email: string;
   password: string;
 }
 
@@ -82,23 +81,24 @@ export const logout = async (): Promise<void> => {
 
 export async function checkSession(): Promise<User | null> {
   try {
-    const res = await api.get<User>("/auth/session", { withCredentials: true });
+    const res = await api.get<User>("/auth/session");
     return res.data; 
   } catch {
     return null;
   }
 }
 
-export const getMe = async () => {
+export const getMe = async (): Promise<User> => {
   const res = await api.get<User>("/users/me");
   return res.data;
 };
 
 export interface UpdateUserRequest {
-  username: string;
+  username?: string;
 }
 
-export const updateMe = async (payload: UpdateUserRequest) => {
+export const updateMe = async (payload: UpdateUserRequest): Promise<User> => {
   const res = await api.patch<User>("/users/me", payload);
   return res.data;
 };
+

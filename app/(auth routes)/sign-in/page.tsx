@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { login } from "../../../lib/api/clientApi";
 import { useRouter } from "next/navigation";
+import { login } from "../../../lib/api/clientApi";
+import { useAuthStore } from "../../../lib/store/authStore";
 import css from "./SignInPage.module.css";
 
 export default function SignInPage() {
@@ -10,6 +11,7 @@ export default function SignInPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const router = useRouter();
+  const setUser = useAuthStore((state) => state.setUser);
 
   const isAxiosError = (
     err: unknown
@@ -19,7 +21,8 @@ export default function SignInPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await login({ email, password }); 
+      const user = await login({ email, password }); 
+      setUser(user); 
       router.push("/profile");
     } catch (err: unknown) {
       if (isAxiosError(err)) {
@@ -41,7 +44,7 @@ export default function SignInPage() {
           <label htmlFor="email">Email</label>
           <input
             id="email"
-            name="email" 
+            name="email"
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -54,7 +57,7 @@ export default function SignInPage() {
           <label htmlFor="password">Password</label>
           <input
             id="password"
-            name="password" 
+            name="password"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
