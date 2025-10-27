@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { api } from '../../api';
 import { cookies } from 'next/headers';
 import { logErrorResponse } from '../../_utils/utils';
@@ -9,7 +9,7 @@ interface Params {
   params: { id: string };
 }
 
-export async function GET(request: Request, { params }: Params) {
+export async function GET(_request: NextRequest, { params }: Params) {
   try {
     const cookieStore = cookies();
     const { id } = params;
@@ -32,7 +32,7 @@ export async function GET(request: Request, { params }: Params) {
   }
 }
 
-export async function DELETE(request: Request, { params }: Params) {
+export async function DELETE(_request: NextRequest, { params }: Params) {
   try {
     const cookieStore = cookies();
     const { id } = params;
@@ -55,7 +55,7 @@ export async function DELETE(request: Request, { params }: Params) {
   }
 }
 
-export async function PATCH(request: Request, { params }: Params) {
+export async function PATCH(request: NextRequest, { params }: Params) {
   try {
     const cookieStore = cookies();
     const { id } = params;
