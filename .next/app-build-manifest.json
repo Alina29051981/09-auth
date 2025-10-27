@@ -16,17 +16,6 @@
       "static/chunks/main-app.js",
       "static/chunks/app/not-found.js"
     ],
-    "/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/page.css",
-      "static/chunks/app/page.js"
-    ],
-    "/@modal/default": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/@modal/default.js"
-    ],
     "/(auth routes)/layout": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
@@ -38,31 +27,22 @@
       "static/css/app/(auth routes)/sign-in/page.css",
       "static/chunks/app/(auth routes)/sign-in/page.js"
     ],
-    "/api/auth/login/route": [
+    "/@modal/default": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/api/auth/login/route.js"
+      "static/chunks/app/@modal/default.js"
     ],
-    "/(private routes)/profile/page": [
+    "/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/css/app/(private routes)/profile/page.css",
-      "static/chunks/app/(private routes)/profile/page.js"
+      "static/css/app/page.css",
+      "static/chunks/app/page.js"
     ],
-    "/api/users/me/route": [
+    "/(auth routes)/sign-up/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/api/users/me/route.js"
-    ],
-    "/api/auth/session/route": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/api/auth/session/route.js"
-    ],
-    "/api/auth/logout/route": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/api/auth/logout/route.js"
+      "static/css/app/(auth routes)/sign-up/page.css",
+      "static/chunks/app/(auth routes)/sign-up/page.js"
     ]
   }
 }
