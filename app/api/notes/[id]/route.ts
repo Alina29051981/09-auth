@@ -5,19 +5,14 @@ import { logErrorResponse } from '../../_utils/utils';
 import { isAxiosError } from 'axios';
 import { Note } from '../../../../types/note';
 
-interface Params {
-  params: { id: string };
-}
-
-export async function GET(_request: NextRequest, { params }: Params) {
+// GET
+export async function GET(_request: NextRequest, context: { params: { id: string } }) {
+  const { id } = context.params;
   try {
     const cookieStore = cookies();
-    const { id } = params;
-
     const res = await api.get<Note>(`/notes/${id}`, {
       headers: { Cookie: cookieStore.toString() },
     });
-
     return NextResponse.json(res.data, { status: res.status });
   } catch (error) {
     if (isAxiosError(error)) {
@@ -32,15 +27,14 @@ export async function GET(_request: NextRequest, { params }: Params) {
   }
 }
 
-export async function DELETE(_request: NextRequest, { params }: Params) {
+// DELETE
+export async function DELETE(_request: NextRequest, context: { params: { id: string } }) {
+  const { id } = context.params;
   try {
     const cookieStore = cookies();
-    const { id } = params;
-
     const res = await api.delete<Note>(`/notes/${id}`, {
       headers: { Cookie: cookieStore.toString() },
     });
-
     return NextResponse.json(res.data, { status: res.status });
   } catch (error) {
     if (isAxiosError(error)) {
@@ -55,16 +49,15 @@ export async function DELETE(_request: NextRequest, { params }: Params) {
   }
 }
 
-export async function PATCH(request: NextRequest, { params }: Params) {
+// PATCH
+export async function PATCH(request: NextRequest, context: { params: { id: string } }) {
+  const { id } = context.params;
   try {
     const cookieStore = cookies();
-    const { id } = params;
     const body = await request.json();
-
     const res = await api.patch<Note>(`/notes/${id}`, body, {
       headers: { Cookie: cookieStore.toString() },
     });
-
     return NextResponse.json(res.data, { status: res.status });
   } catch (error) {
     if (isAxiosError(error)) {
