@@ -1,7 +1,7 @@
 # NoteHub
 This project implements a web application for creating, editing, deleting, and viewing notes with user authentication. It is built with Next.js (App Router) using TypeScript, React Query (TanStack Query), and Zustand for state management.
 
-Project features:
+# Project features:
 
 - User registration and login with cookies;
 
@@ -20,4 +20,16 @@ Project features:
 - Supports SSR and CSR;
 
 - Filtering, searching, and pagination of notes.
+
+# Technologies:
+
+Frontend: Next.js (App Router), React, TypeScript
+
+State management: Zustand, React Query
+
+HTTP: Axios
+
+Styling: CSS Modules
+
+Deployment: Vercel
   
