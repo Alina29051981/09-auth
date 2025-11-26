@@ -2,7 +2,7 @@
 This project implements a web application for creating, editing, deleting, and viewing notes with user authentication. It is built with Next.js (App Router) using TypeScript, React Query (TanStack Query), and Zustand for state management.
 
 **Live Demo:**
-https://04-react-query-khaki-nine.vercel.app/
+https://09-auth-rho-two.vercel.app/
 
 ![Vercel Status](https://img.shields.io/github/deployments/Alina29051981/09-auth/Production?label=vercel)
 ![Last Commit](https://img.shields.io/github/last-commit/Alina29051981/09-auth)
